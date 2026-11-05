@@ -13,6 +13,10 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--", "--port", "4331"],
       "port": 4331
+    },
+    {
+      "name": "staging",
+      "url": "https://prompt-triage.netlify.app/"
     }
   ]
 }
