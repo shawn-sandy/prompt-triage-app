@@ -402,6 +402,10 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     background: var(--hero-paper-sunk);
     border-block-start: 1px solid var(--hero-rule);
     display: flex;
+
+    /* Wraps so that when text is enlarged (200% at 320px) the button drops
+       below the command instead of squeezing it to one character per line. */
+    flex-wrap: wrap;
     gap: 0.75rem;
     padding: 0.75rem 0.75rem 0.75rem 1.25rem;
   }
@@ -411,7 +415,7 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     border: 0;
     border-radius: 0;
     color: var(--hero-ink-soft);
-    flex: 1;
+    flex: 1 1 14ch;
     font-family: var(--font-family-mono, ui-monospace, monospace);
     font-size: 0.78125rem;
     line-height: 1.7;
