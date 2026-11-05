@@ -17,7 +17,7 @@ import { test, expect, type Page, type Locator } from '@playwright/test'
 
 const NAV = 'nav[aria-label="Primary"]'
 const PANEL_ID = 'site-nav-popover'
-const LINK_LABELS = ['Home', 'Articles', 'Blog', 'About', 'Contact'] as const
+const LINK_LABELS = ['Home', 'Articles', 'Blog', 'About', 'Contact', 'GitHub'] as const
 
 /** WCAG 2.2 SC 2.5.8 asks for 24x24; the design target here is 44x44. */
 const MIN_TARGET_PX = 44
@@ -77,7 +77,7 @@ test.describe('Primary navigation popover', () => {
     }
   })
 
-  test('clicking the hamburger reveals all five links', async ({ page }) => {
+  test('clicking the hamburger reveals all six links', async ({ page }) => {
     await page.goto('/')
 
     await hamburger(page).click()

@@ -1,41 +1,43 @@
 ---
-title: 'My First Blog Post'
-pubDate: 2022-07-01
-description: 'This is the first post of my new Astro blog.'
-author: 'Astro Learner'
-# image:
-#     url: 'https://picsum.photos/300'
-#     alt: 'The full Astro logo.'
-#     caption: The img caption from my first blog post.
-tags: ['astro', 'blogging', 'learning in public']
-publish: false
+title: 'What prompt-triage does with your first prompt'
+pubDate: 2026-11-05T12:00:00Z
+description: 'One rating, one dialog and an optional new session: what happens before the first prompt of a session is sent.'
+author: 'Shawn Sandy'
+tags: ['claude-code', 'prompt-triage', 'models']
+publish: true
 ---
 
-publish on: 2022-07-01
+prompt-triage acts on the first prompt of a session. It skips slash commands and resumed sessions,
+so a prompt typed into an existing conversation passes through untouched.
 
-Welcome to my _new blog_ about learning Astro! Here, I will share my learning journey as I build a new website.
+## The rating
 
-### What I've accomplished
+One call to the small, fast model rates the prompt `simple`, `moderate` or `complex`. Each rating
+suggests a model:
 
-1. **Installing Astro**: First, I created a new Astro project and set up my online accounts.
+| Rating     | Suggested model |
+| ---------- | --------------- |
+| `simple`   | `haiku`         |
+| `moderate` | `sonnet`        |
+| `complex`  | `opus`          |
 
-2. **Making Pages**: I then learned how to make pages by creating new `.astro` files and placing them in the `src/pages/` folder.
+When the suggestion differs from the model you are on, a dialog asks whether to switch or keep your
+current model. When it matches, nothing is asked.
 
-3. **Making Blog Posts**: This is my first blog post! I now have Astro pages and Markdown posts!
+Under "Other" you can type a model name. Free text switches the model only if it names exactly one
+of `haiku`, `sonnet` or `opus`, so `keep opus` switches to opus. Text that names two models, or that
+contains a no-word such as "no" or "don't", switches nothing. Use `/model` for those cases.
 
-## What's next
+## Open in a new session
 
-I plan to keep learning Astro and share what I build here. There is more to come
-soon. I will finish the Astro tutorial, and then keep adding more posts. Watch
-this space for more to come.
+In the desktop app, a `complex` rating also offers **Open in a new session**, even when the
+suggested model already matches yours. Choosing it adds context asking Claude to start a fresh
+session with `start_session` instead of doing the task in this one. The plugin cannot start the
+session itself, so this depends on Claude following that instruction.
 
-Astro is an exciting new web framework that makes building websites fast, fun
-and approachable. It lets you write your site in components using familiar web
-languages like HTML, CSS and JavaScript. Astro removes much of the complexity of
-traditional web development by handling things like server-side rendering,
-bundling and optimizations for you. This allows you to focus on creating amazing
-user experiences instead of configuring build tools. With Astro's excellent
-documentation and active community, it's easy to get started building your next
-project. Give Astro a try if you want a simpler way to craft beautiful,
-lightning-fast websites!
-Unfortunately, there is no content provided between the
+## What stays unchanged
+
+Dismissing the dialog, or a failed rating, sends the prompt as typed. A model switch lasts for the
+rest of the session and covers the main conversation only; subagents keep their own models. While it
+is in effect the status line shows `running <name>, not <session model>`. Running `/model` yourself
+ends the override.

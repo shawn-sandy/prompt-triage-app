@@ -6,7 +6,7 @@ const tags = [...new Set(allPosts.map(post => post.data.tags).flat())]
 const pageTitle = 'Tag Index'
 ---
 
-<Layout pageTitle={pageTitle}>
+<Layout pageTitle={pageTitle} pageDescription="Browse prompt-triage posts by topic.">
   <ul data-list="unstyled">
     {
       tags?.map(tag => (

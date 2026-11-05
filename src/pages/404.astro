@@ -1,14 +1,16 @@
 ---
 import Blank from '#components/astro/Blank.astro'
 import Layout from '#layouts/Layout.astro'
+import { PLUGIN_REPO_URL } from '#utils/site-config'
 const pageTitle = '404 Not Found'
 ---
 
-<Layout
-  pageTitle={pageTitle}
-  pageDescription="Ooops you broke it! The page you requested could not be found."
->
+<Layout pageTitle={pageTitle} pageDescription="The page you requested could not be found.">
   <h2>{pageTitle}</h2>
-  <h3>Hmmm... Seems, you took a wrong turn</h3>
+  <h3>That page does not exist</h3>
+  <p>
+    Start from the <a href="/">home page</a>, read <a href="/content">how prompt-triage works</a>,
+    or <a href={`${PLUGIN_REPO_URL}#install`}>install the plugin</a>.
+  </p>
   <Blank />
 </Layout>

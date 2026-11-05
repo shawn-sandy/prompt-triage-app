@@ -12,9 +12,10 @@
  * the two calls to action, the specimen's own link and the focus rings.
  * Nothing decorative carries it, which keeps the rule machine-checkable.
  *
- * The signature element is the specimen: a real `Card` rendered from the same
- * values the code sample prints, so the sample cannot drift from the component
- * standing beside it.
+ * The signature element is the specimen: a `Card` standing in for the dialog the
+ * plugin shows on a complex first prompt, above the one command that installs
+ * it. The install command comes from `PLUGIN_INSTALL_COMMAND`, so the hero and
+ * the README cannot print different commands.
  *
  * @component HomeHero
  * @example
@@ -28,13 +29,14 @@
  * <!-- All three strings are overridable; every one has a default. -->
  * <HomeHero
  *   slot="header"
- *   eyebrow="30+ components / built for Claude Code"
- *   headline="Build agentic web apps on Astro Kit."
- *   deck="Login, database and dashboard come wired in."
+ *   eyebrow="Claude Code plugin / MIT licensed"
+ *   headline="Pick the right model before the first prompt runs."
+ *   deck="Rates your first prompt and suggests haiku, sonnet or opus."
  * />
  * ```
  */
 import Card from '#components/astro/Card.astro'
+import { PLUGIN_INSTALL_COMMAND, PLUGIN_REPO_URL } from '#utils/site-config'
 
 export type Props = {
   /** Mono eyebrow set above the headline. */
@@ -46,33 +48,26 @@ export type Props = {
 }
 
 const {
-  eyebrow = '30+ components / built for Claude Code',
-  headline = 'Build agentic web apps on Astro Kit.',
-  deck = 'Login, database and dashboard come wired in, and the repo is set up for Claude Code to work in.',
+  eyebrow = 'Claude Code plugin / MIT licensed',
+  headline = 'Pick the right model before the first prompt runs.',
+  deck = 'A Claude Code plugin that rates your first prompt, suggests haiku, sonnet or opus to match, and raises effort when it is set too low.',
 } = Astro.props as Props
 
-const specimenTitle = 'Accessibility First'
+// An illustration of the dialog described in the README, not a screenshot: a
+// complex prompt on sonnet, where opus is suggested and the effort floor is high.
+const specimenTitle = 'Rated complex'
 const specimenBody =
-  'Screen-reader support, keyboard navigation and WCAG-compliant patterns, built in.'
+  'You are on sonnet. Switch to opus, keep sonnet, or refine the prompt first. Whichever model you pick, effort is raised to at least high.'
 
-// The component index, and the destination for both the primary CTA and the
+// The overview article, and the destination for both the secondary CTA and the
 // specimen card. Not `/docs`: that route calls `getEntry('docs', '0-welcome')`
 // for an entry the collection does not contain and passes the `undefined`
-// straight into `render()`, so it answers 500. `/guide/components/` is the
-// Starlight route that actually lists the components this hero is advertising.
-// Single constant on purpose — the printed code block below interpolates it, so
-// the rendered card, its href and the source line a visitor copies cannot drift.
-const specimenLink = '/guide/components/'
+// straight into `render()`, so it answers 500.
+const howItWorksLink = '/content'
 
-// Built from the same constants the specimen renders from, so the printed
-// call site is always the call site that produced the card above it.
-const specimenCode = [
-  "import Card from '#components/astro/Card.astro'",
-  '',
-  `<Card cardTitle="${specimenTitle}" cardLink="${specimenLink}">`,
-  `  <p>${specimenBody}</p>`,
-  '</Card>',
-].join('\n')
+// The README's Install section holds the terminal, shell and desktop-app steps,
+// so the primary CTA sends visitors there instead of repeating all three.
+const installLink = `${PLUGIN_REPO_URL}#install`
 ---
 
 <header class="home-hero" data-home-hero>
@@ -82,26 +77,29 @@ const specimenCode = [
     <p class="home-hero__deck" data-home-hero-deck>{deck}</p>
 
     <div class="home-hero__cta">
-      <a class="home-hero__button" href={specimenLink}>Browse components</a>
-      <a class="home-hero__button home-hero__button--ghost" href="/blog">Read the blog</a>
+      <a class="home-hero__button" href={installLink}>Install the plugin</a>
+      <a class="home-hero__button home-hero__button--ghost" href={howItWorksLink}>
+        See how it works
+      </a>
     </div>
 
     <p class="home-hero__legend">
-      Colour marks interactivity. Static content is ink; <b>links, buttons and controls</b> carry the
-      accent. Nothing else does.
+      <b>One classification call per session,</b> plus a haiku call when you refine a prompt, and a second
+      rating if you refine from the first-prompt dialog. Nothing is stored, and the plugin makes no network
+      requests of its own.
     </p>
   </div>
 
   <figure class="home-hero__specimen">
-    <figcaption class="home-hero__specimen-label">Rendered</figcaption>
+    <figcaption class="home-hero__specimen-label">Example dialog</figcaption>
     <div class="home-hero__specimen-body">
-      <Card cardTitle={specimenTitle} cardLink={specimenLink}>
+      <Card cardTitle={specimenTitle} cardLink={howItWorksLink}>
         <p>{specimenBody}</p>
       </Card>
     </div>
-    <!-- tabindex: the import line scrolls sideways, and a scroll region needs a
-         tab stop for a keyboard user to scroll it (WCAG 2.1.1). -->
-    <pre class="home-hero__code" tabindex="0"><code>{specimenCode}</code></pre>
+    <!-- tabindex: the install command scrolls sideways on narrow screens, and a
+         scroll region needs a tab stop for a keyboard user to scroll it (WCAG 2.1.1). -->
+    <pre class="home-hero__code" tabindex="0"><code>{PLUGIN_INSTALL_COMMAND}</code></pre>
   </figure>
 </header>
 
@@ -324,8 +322,8 @@ const specimenCode = [
   }
 
   /*
-   * Deliberately not accented. The legend describes the rule; it is not
-   * interactive, so honouring the rule means it stays in ink.
+   * Deliberately not accented. The legend is static text, and the accent is
+   * reserved for things a visitor can operate, so it stays in ink.
    */
   .home-hero .home-hero__legend {
     border-top: 1px solid var(--hero-rule);
@@ -377,7 +375,7 @@ const specimenCode = [
     line-height: 1.7;
     margin: 0;
 
-    /* The import line is longer than a 320px viewport. It scrolls inside this
+    /* The install command is longer than a 320px viewport. It scrolls inside this
        box instead of widening the document. */
     max-width: 100%;
     overflow-x: auto;

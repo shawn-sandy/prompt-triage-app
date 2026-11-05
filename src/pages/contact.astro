@@ -1,7 +1,7 @@
 ---
 export const prerender = false
 import Layout from '#layouts/Layout.astro'
-import { CONTACT_INFO } from '#utils/site-config.js'
+import { CONTACT_INFO, PLUGIN_REPO_URL } from '#utils/site-config.js'
 import { CSRF_CONFIG } from '#utils/csrf.js'
 import Alert from '#components/astro/Alert.astro'
 
@@ -13,14 +13,15 @@ if (Astro.request.method === 'POST') {
 
 <Layout
   pageTitle="Contact"
-  pageDescription="We are here to answer your questions, welcome your feedback, and help you get involved"
+  pageDescription="Report a bug, request a feature or ask a question about the prompt-triage plugin."
 >
-  <h3>Reach Out, Say Hello Neighbor!</h3>
+  <h3>Questions, bug reports and ideas</h3>
   <hr />
   <section>
     <p>
-      We’re here to answer your questions, welcome your feedback, and help you get involved. Use the
-      form below or contact us directly at [insert email address] or [insert phone number].
+      Bug reports and feature requests are easiest to track as an issue on the
+      <a href={`${PLUGIN_REPO_URL}/issues`}>prompt-triage GitHub repository</a>, where the answer
+      stays findable for the next person. For anything else, use the form below.
     </p>
     <hr />
 

@@ -1,14 +1,17 @@
 ---
 export const prerender = true
 import Layout from '../layouts/Layout.astro'
+import { PLUGIN_REPO_URL } from '#utils/site-config'
 ---
 
-<Layout>
+<Layout
+  pageTitle="Message sent"
+  pageDescription="Thanks for getting in touch about the prompt-triage plugin."
+>
   <h3>Thank you for reaching out, we will respond shortly</h3>
   <p>
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor iste aperiam autem est. Ad
-    veritatis molestias aliquam eum omnis ex vel porro et consequuntur? Non quasi nisi accusantium
-    doloremque ab.
+    While you wait, <a href="/content">how prompt-triage works</a> covers the rating, the effort floor
+    and what the plugin sends, and the <a href={PLUGIN_REPO_URL}>GitHub README</a> has the full reference.
   </p>
   <!-- <p>Email sent successfully.</p> -->
   <p><a href="/"><i>Return to our home page</i></a></p>

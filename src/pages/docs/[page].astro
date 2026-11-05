@@ -20,7 +20,7 @@ const { page } = Astro.props as TODO
 ---
 
 <Layout pageTitle="AstroKit Docs">
-  <ContentList page={page} />
+  <ContentList page={page} to="docs" />
   <!-- Pagination -->
   <Pagination
     collection="docs"

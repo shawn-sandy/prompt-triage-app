@@ -25,12 +25,12 @@ const { tag } = Astro.params
 const { posts } = Astro.props
 ---
 
-<Layout pageTitle={`Tag: ${tag}`}>
+<Layout pageTitle={`Tag: ${tag}`} pageDescription={`prompt-triage posts tagged ${tag}.`}>
   <ul data-list="unstyled">
     {
       posts?.map(post => (
         <BlogPost
-          url={`/posts/${post.slug}`}
+          url={`/posts/${post.id}`}
           title={post.data.title}
           description={post.data.description}
         />

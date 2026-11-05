@@ -1,18 +1,20 @@
 ---
 import Layout from '#layouts/Layout.astro'
 import ContactForm from '#components/react/ContactForm'
+import { PLUGIN_REPO_URL } from '#utils/site-config'
 ---
 
 <Layout
   pageTitle="Contact Us"
-  pageDescription="We are here to answer your questions, welcome your feedback, and help you get involved"
+  pageDescription="Report a bug, request a feature or ask a question about the prompt-triage plugin."
 >
-  <h3>Reach Out, Say Hello Neighbor!</h3>
+  <h3>Questions, bug reports and ideas</h3>
   <hr />
   <section>
     <p>
-      We're here to answer your questions, welcome your feedback, and help you get involved. Use the
-      form below or contact us directly at [insert email address] or [insert phone number].
+      Bug reports and feature requests are easiest to track as an issue on the
+      <a href={`${PLUGIN_REPO_URL}/issues`}>prompt-triage GitHub repository</a>, where the answer
+      stays findable for the next person. For anything else, use the form below.
     </p>
     <hr />
 

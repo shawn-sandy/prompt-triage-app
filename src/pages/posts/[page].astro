@@ -30,7 +30,10 @@ const { page } = Astro.props
 const pageSize = PAGINATION_COUNT || 5
 ---
 
-<Layout pageTitle="Blog Posts">
+<Layout
+  pageTitle="Blog Posts"
+  pageDescription="Short explainers on how prompt-triage rates prompts, sets effort and refines them."
+>
   <ContentList page={page} />
 
   <!-- Pagination -->

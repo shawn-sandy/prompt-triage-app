@@ -1,0 +1,30 @@
+---
+title: 'Refine a prompt before you send it'
+pubDate: 2026-11-05T10:00:00Z
+description: 'How Refine prompt and /refine-prompt review a prompt, ask up to three questions and put a rewrite in the prompt box.'
+author: 'Shawn Sandy'
+tags: ['claude-code', 'prompt-triage', 'prompts']
+publish: true
+---
+
+The **Refine prompt** option in the first-prompt dialog holds the prompt back instead of sending it. One call to `haiku` reviews it for a missing goal, scope or done-criteria, ambiguity, contradictions and unfilled placeholders such as `[Specify the files]`, and rewrites it to fix them.
+
+## Run it by hand
+
+For any prompt, at any point in the session:
+
+```text
+/refine-prompt <prompt>
+```
+
+It asks the same questions, shows the issues and puts the rewrite in the prompt box. Nothing is sent until you press Enter. Versions up to 0.3.3 called this command `/improve`; that name no longer runs.
+
+## Questions, answers and the path check
+
+When the fix needs a fact only you know, such as which files are in scope, the review asks first: up to three questions, one dialog each, with likely answers to pick or your own under "Other". A second `haiku` call then rewrites the prompt with your answers and lists only the issues your answers left unfixed. Dismissing a question skips the rest, and the answers given so far are still used.
+
+Paths that the prompt or the rewrite names, such as `src/auth.ts`, are checked against the working directory, and any that are missing are listed, so a path the review made up is caught. The check is a heuristic. A name such as `node.js` can be reported as missing, and a folder named without `./`, such as `src/components`, is skipped.
+
+## What it costs
+
+Each refinement adds one `haiku` request, and a second when you answer its questions. Choosing **Refine prompt** skips the model choice for that prompt; the choice is offered again when you send the rewrite, and the rewrite is rated again, which is one more classification request, without a second refine offer.

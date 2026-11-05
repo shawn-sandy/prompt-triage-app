@@ -4,8 +4,8 @@ import { getCollection } from 'astro:content'
 export async function GET() {
   const posts = await getCollection('posts')
   return rss({
-    title: 'Astro Learner | Blog',
-    description: 'My journey learning Astro',
+    title: 'prompt-triage | Blog',
+    description: 'Short explainers on the prompt-triage Claude Code plugin',
     site: 'https://my-blog-site.netlify.app',
     items: posts.map(post => ({
       title: post.data.title,
