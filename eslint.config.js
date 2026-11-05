@@ -267,6 +267,7 @@ export default [
       'node_modules/**',
       '.astro/**',
       '.vercel/**',
+      '.netlify/**',
       'playwright-report/**',
       'test-results/**',
       '*.d.ts',
