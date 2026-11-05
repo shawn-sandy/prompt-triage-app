@@ -607,6 +607,19 @@ nav[data-site-nav]:has(> [popover]) > [data-nav-brand] {
   font-weight: 600;
   text-decoration: none;
 }
+@media (max-width: 39.99em) {
+  nav[data-site-nav]:has(> [popover]) > [data-nav-brand] [data-nav-brand-name] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
 nav[data-site-nav]:has(> [popover]) > [popover] {
   background-color: inherit;
   border: 1px solid color-mix(in srgb, currentcolor 20%, transparent);
