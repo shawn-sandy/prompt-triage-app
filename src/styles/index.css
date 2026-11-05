@@ -607,6 +607,12 @@ nav[data-site-nav]:has(> [popover]) > [data-nav-brand] {
   font-weight: 600;
   text-decoration: none;
 }
+nav[data-site-nav]:has(> [popover]) > [data-nav-brand] svg {
+  height: 3rem;
+  margin-inline-end: var(--space-2);
+  vertical-align: middle;
+  width: 3rem;
+}
 @media (max-width: 39.99em) {
   nav[data-site-nav]:has(> [popover]) > [data-nav-brand] [data-nav-brand-name] {
     position: absolute;

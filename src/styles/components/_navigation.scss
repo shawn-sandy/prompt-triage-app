@@ -70,6 +70,13 @@ nav[data-site-nav]:has(> [popover]) {
     text-decoration: none;
   }
 
+  > [data-nav-brand] svg {
+    height: 3rem;
+    margin-inline-end: var(--space-2);
+    vertical-align: middle;
+    width: 3rem;
+  }
+
   // On phones the logo alone is the brand. The name stays in the accessible
   // name of the link but is clipped out of the layout, so the bar fits.
   @media (width <= 39.99em) {

@@ -87,6 +87,19 @@ describe('Navigation.astro popover markup contract', () => {
     expect(attr(brand as string, 'href')).toBe('/')
   })
 
+  it('inlines the brand logo so the packaged component carries it', async () => {
+    // `package.json` ships only src/components, so a /images asset would be
+    // missing for every consumer. The logo must be markup, not a URL.
+    const html = await render()
+    const brandHtml = /<a\b[^>]*\bdata-nav-brand\b[^>]*>([\s\S]*?)<\/a>/.exec(html)?.[1] ?? ''
+    const logo = /<svg\b[^>]*>/.exec(brandHtml)?.[0]
+
+    expect(brandHtml).not.toMatch(/<img\b/)
+    expect(logo).toBeDefined()
+    expect(attr(logo as string, 'aria-hidden')).toBe('true')
+    expect(brandHtml).toMatch(/<span\b[^>]*\bdata-nav-brand-name\b/)
+  })
+
   it('hides the hamburger icon from assistive tech and the tab order', async () => {
     const svg = openTag(await render(), 'svg')
 
