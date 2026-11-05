@@ -65,8 +65,33 @@ nav[data-site-nav]:has(> [popover]) {
   }
 
   > [data-nav-brand] {
+    font-family: var(--font-family-mono);
+    font-size: 1.5rem;
     font-weight: 600;
     text-decoration: none;
+  }
+
+  > [data-nav-brand] svg {
+    height: 3rem;
+    margin-inline-end: var(--space-2);
+    vertical-align: middle;
+    width: 3rem;
+  }
+
+  // On phones the logo alone is the brand. The name stays in the accessible
+  // name of the link but is clipped out of the layout, so the bar fits.
+  @media (width <= 39.99em) {
+    > [data-nav-brand] [data-nav-brand-name] {
+      border: 0;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
   }
 
   > [popover] {
