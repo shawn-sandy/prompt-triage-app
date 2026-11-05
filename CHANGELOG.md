@@ -313,7 +313,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   entries do not have. They now use `post.id`, the value the post detail routes take.
   `tests/components/latest-post-links.test.ts` renders both against the real collection and checks
   that the newest post is listed first. The four posts now carry distinct publish times, so which
-  two appear as "latest" no longer depends on load order
+  two appear as "latest" no longer depends on load order. The blog and article list pages
+  (`ContentList.astro`) and the tag pages (`tags/[tag].astro`) had the same defect. `ContentList`
+  takes a `to` route prop (`posts` by default; the articles and docs list pages pass `content` and
+  `docs`), and `tests/components/post-list-links.test.ts` covers all three
 - **Builds depended on a `patch-package` fix for `@clerk/astro`** (`package.json`): an install that
   skipped `prepare` failed every build with `A 'return' statement can only be used within a function
 body` in `@clerk/astro`'s `MenuItemRenderer.astro`. Clerk 4 ships the fix, so

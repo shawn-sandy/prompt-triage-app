@@ -28,7 +28,7 @@ const { page } = Astro.props as TODO
   pageTitle="Articles"
   pageDescription="Guides to installing and using the prompt-triage plugin."
 >
-  <ContentList page={page} />
+  <ContentList page={page} to="content" />
   <!-- Pagination -->
   <Pagination
     collection="content"
