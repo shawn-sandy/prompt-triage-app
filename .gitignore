@@ -42,3 +42,7 @@ backup-docs/
 
 # Storybook
 storybook-static/
+
+# Generated agent config mirrors (not project source).
+.agents/
+.codex/
