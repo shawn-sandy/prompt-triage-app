@@ -27,4 +27,4 @@ Paths that the prompt or the rewrite names, such as `src/auth.ts`, are checked a
 
 ## What it costs
 
-Each refinement adds one `haiku` request, and a second when you answer its questions. Choosing **Refine prompt** skips the model choice for that prompt; the choice is offered again when you send the rewrite, and the rewrite is rated again without a second refine offer.
+Each refinement adds one `haiku` request, and a second when you answer its questions. Choosing **Refine prompt** skips the model choice for that prompt; the choice is offered again when you send the rewrite, and the rewrite is rated again, which is one more classification request, without a second refine offer.

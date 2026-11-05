@@ -12,10 +12,13 @@ import PostsList from '#components/astro/PostsList.astro'
  * Expected URLs here come from the real collection, so the assertions track the data.
  */
 
-/** Renders an Astro component to an HTML string through the container API. */
-const render = async (component: Parameters<AstroContainer['renderToString']>[0]) => {
+/** Renders an Astro component, optionally with props, to an HTML string through the container API. */
+const render = async (
+  component: Parameters<AstroContainer['renderToString']>[0],
+  props?: Record<string, unknown>
+) => {
   const container = await AstroContainer.create()
-  return container.renderToString(component)
+  return container.renderToString(component, props ? { props } : {})
 }
 
 /** Every `href` in the markup that points under `/posts/`. */
@@ -42,7 +45,10 @@ describe('latest post links', () => {
 
   it('PostsList links every published post by its entry id', async () => {
     const valid = await publishedPostUrls()
-    const hrefs = postHrefs(await render(PostsList))
+
+    // PostsList shows 10 posts unless told otherwise. Asking for every post keeps this test
+    // about link targets, so a collection larger than the default does not fail it.
+    const hrefs = postHrefs(await render(PostsList, { postLength: valid.length }))
 
     expect(hrefs.length).toBeGreaterThan(0)
     expect([...hrefs].sort()).toEqual([...valid].sort())

@@ -7,8 +7,8 @@ tags: ['claude-code', 'prompt-triage', 'models']
 publish: true
 ---
 
-prompt-triage acts once per session, on the first prompt only. It skips slash commands and resumed
-sessions, so a prompt typed into an existing conversation passes through untouched.
+prompt-triage acts on the first prompt of a session. It skips slash commands and resumed sessions,
+so a prompt typed into an existing conversation passes through untouched.
 
 ## The rating
 

@@ -66,7 +66,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Light on cost and data',
     description:
-      'One small classification request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. The plugin stores nothing, writes no files and makes no network requests of its own.',
+      'One small classification request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions, and the rewrite is rated again. The plugin stores nothing, writes no files and makes no network requests of its own.',
     link: '/content#cost-and-data',
     category: 'security',
     priority: 80,

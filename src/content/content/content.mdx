@@ -41,9 +41,9 @@ The plugin needs a Claude Code release that supports mods. It loads in the termi
 
 ## Cost and data
 
-The cost is one small classification request on the first prompt of each session. Later prompts are not checked. Each **Refine prompt** or `/refine-prompt` adds one `haiku` request, and a second when you answer its questions.
+The cost is one small classification request on the first prompt of each session. Later prompts are not checked. Each **Refine prompt** or `/refine-prompt` adds one `haiku` request, and a second when you answer its questions. Choosing **Refine prompt** in the dialog also means the rewrite is rated again when you send it, which is one more classification request.
 
-The text of your first prompt is sent once per session to the small, fast model to get the rating. When you refine a prompt, it is also sent to `haiku` for the review. The plugin does not persist prompt data, the model override or the effort minimum; they are held in memory for the session. It writes no files and makes no network requests of its own.
+The text of your first prompt is sent to the small, fast model to get the rating, once per session unless you refine it. When you refine a prompt, it is also sent to `haiku` for the review, and the rewrite is rated again when you send it. The plugin does not persist prompt data, the model override or the effort minimum; they are held in memory for the session. It writes no files and makes no network requests of its own.
 
 ## Limits worth knowing
 
