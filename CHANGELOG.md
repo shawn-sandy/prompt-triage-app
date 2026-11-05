@@ -164,6 +164,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Site copy promotes the prompt-triage Claude Code plugin** (`src/components/astro/HomeHero.astro`,
+  `src/data/features.ts`, `src/utils/site-config.ts`): the hero, feature cards, navigation, footer,
+  About, Contact, success, 404 and offline pages, page titles, the RSS feed and the content
+  collections now describe the plugin, worded from its README. Page structure and styles are
+  unchanged; component edits are limited to text and one navigation link
+  - `site-config.ts` gains `PLUGIN_REPO_URL` and `PLUGIN_INSTALL_COMMAND`, so the hero, navigation,
+    footer, About, Contact and 404 links share one source
+  - The navigation gains a GitHub link, and `e2e/navigation-popover.spec.ts` now expects six links
+  - The homepage section heading is now "What it does", the app-name meta tags in `Base.astro` read
+    "prompt-triage", and the sign-in, sign-up, admin, dashboard and profile page titles drop the
+    "Astro Kit" suffix
+  - `/content` is now the article "How prompt-triage works". The four posts are plugin explainers,
+    and `mdx-example` and `youtube` were renamed to `refine-prompt` and `hooks`
+  - The blog, tag and article list pages pass a page description, so they no longer show the layout's
+    default "Sign in to your account" under the title
 - **`@clerk/astro` 3.0.23 to 4.1.19**: 4.0.0 is the first major whose peer range includes Astro 7.
   Clerk's half of the `.npmrc` `legacy-peer-deps` reason is gone; the flag stays for
   `astro-embed@0.13.0`
@@ -293,6 +308,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **"Latest posts" links pointed at `/posts/undefined`** (`src/components/astro/CollectionList.astro`,
+  `src/components/astro/PostsList.astro`): both built each link from `post.slug`, which content-layer
+  entries do not have. They now use `post.id`, the value the post detail routes take.
+  `tests/components/latest-post-links.test.ts` renders both against the real collection and checks
+  that the newest post is listed first. The four posts now carry distinct publish times, so which
+  two appear as "latest" no longer depends on load order
 - **Builds depended on a `patch-package` fix for `@clerk/astro`** (`package.json`): an install that
   skipped `prepare` failed every build with `A 'return' statement can only be used within a function
 body` in `@clerk/astro`'s `MenuItemRenderer.astro`. Clerk 4 ships the fix, so

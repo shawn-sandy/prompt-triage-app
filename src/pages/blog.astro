@@ -6,7 +6,10 @@ import BlogPosts from '../components/astro/BlogPosts.astro'
 const allPosts = await getCollection('posts')
 ---
 
-<Layout pageTitle="Blogs">
+<Layout
+  pageTitle="Blog"
+  pageDescription="Short explainers on how prompt-triage rates prompts, sets effort and refines them."
+>
   <ul data-list="unstyled">
     {
       allPosts.map(post => (

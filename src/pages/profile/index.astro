@@ -6,7 +6,10 @@ import UserInfo from '#/components/astro/UserInfo.astro'
 import SignedOutMessage from '#/components/astro/SignedOutMessage.astro'
 ---
 
-<Dashboard pageTitle="My Profile - Astro Kit" pageDescription="User profile and account settings">
+<Dashboard
+  pageTitle="My Profile - prompt-triage"
+  pageDescription="User profile and account settings"
+>
   <Show when="signed-in">
     <DashboardPage eyebrow="Profile" title="My Profile">
       <div class="profile-content">

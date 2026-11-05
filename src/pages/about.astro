@@ -1,63 +1,44 @@
 ---
 export const prerender = true
 import Layout from '../layouts/Layout.astro'
+import { PLUGIN_REPO_URL } from '#utils/site-config'
 const pageTitle = 'About'
 
-const identity = {
-  firstName: 'Sarah',
-  country: 'Canada',
-  occupation: 'Technical Writer',
-  hobbies: ['photography', 'birdwatching', 'baseball'],
-}
-
-const skills = ['HTML', 'CSS', 'JavaScript', 'React', 'Astro', 'Writing Docs']
-
-const happy = true
-const finished = false
-const goal = 3
+const facts = [
+  'It runs in Claude Code: the terminal, the IDE extensions and the Code tab of the desktop app.',
+  'It costs one small classification request on the first prompt of each session, plus one haiku request for each refinement (two if you answer its questions).',
+  'It stores nothing, writes no files and makes no network requests of its own.',
+  'All of its logic is in one file, hooks/register.ts, with tests you run using claude plugin test .',
+  'It is released under the MIT License.',
+]
 ---
 
-<Layout pageTitle={pageTitle}>
+<Layout
+  pageTitle={pageTitle}
+  pageDescription="What the prompt-triage Claude Code plugin does, what it costs and where it runs."
+>
   <h2>{pageTitle}</h2>
-  <h3>... and my new Astro site!</h3>
+  <h3>... prompt-triage, a Claude Code plugin</h3>
 
   <p>
-    I am working through Astro's introductory tutorial. This is the second page on my website, and
-    it's the first one I built myself!
+    prompt-triage is a Claude Code plugin maintained by Shawn Sandy. It looks at the first prompt of
+    each new session, rates how complex it is, offers to switch models before the work starts, and
+    raises the effort level when it is too low for the task.
   </p>
 
   <p>
-    This site will update as I complete more of the tutorial, so keep checking back and see how my
-    journey is going!
+    It can also review a prompt before you send it and put an improved version in the prompt box. In
+    the Claude desktop app it can offer to hand a complex task to a new session, by asking Claude to
+    start one.
   </p>
-  <p>Here are a few facts about me:</p>
+  <p>A few facts:</p>
   <ul>
-    <li>My name is {identity.firstName}.</li>
-    <li>
-      I live in {identity.country} and I work as a {identity.occupation}.
-    </li>
-    {
-      identity.hobbies.length >= 2 && (
-        <li>
-          Two of my hobbies are: {identity.hobbies[0]} and {identity.hobbies[1]}
-        </li>
-      )
-    }
+    {facts.map(fact => <li>{fact}</li>)}
   </ul>
 
   <p>
-    I have experience with a wide range of technical skills that are useful for web development and
-    writing documentation. Some of my strongest abilities are with HTML, CSS, JavaScript, React, and
-    Astro. I also have skills in writing documentation, which helps me create tutorials and API
-    references. My goal is to continue improving my development and writing skills over time.
+    Read <a href="/content">how it works</a>, or go to the <a href={PLUGIN_REPO_URL}
+      >GitHub repository</a
+    > for the source, the full README and the issue tracker. This site is built with Astro.
   </p>
-  <p>My skills are:</p>
-  <ul>
-    {skills.map(skill => <li>{skill}</li>)}
-  </ul>
-  {happy && <p>I am happy to be learning Astro!</p>}
-
-  {finished && <p>I finished this tutorial!</p>}
-
-  {goal === 3 ? <p>My goal is to finish in 3 days.</p> : <p>My goal is not 3 days.</p>}
 </Layout>

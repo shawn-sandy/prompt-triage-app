@@ -1,12 +1,56 @@
 ---
-title: 'Content articles'
-pubDate: 2022-07-01
-description: 'This is the first post of my new Astro blog.'
-author: 'AstroKit'
-tags: ['astro', 'blogging', 'learning in public']
+title: 'How prompt-triage works'
+pubDate: 2026-11-05
+description: 'What the plugin does on the first prompt of a session, how to install it, and what it costs and sends.'
+author: 'Shawn Sandy'
+tags: ['claude-code', 'prompt-triage', 'install']
 publish: true
 ---
 
-## Content articles
+prompt-triage is a Claude Code plugin. It looks at the first prompt of each new session, rates how complex it is, offers to switch models before the work starts, and raises the effort level when it is too low for the task.
 
-You can add content and articles Headers to your Astro blog. This is the first post of my new Astro blog. I will be sharing my learning journey in public. I hope you find it useful.
+## What happens on the first prompt
+
+1. On the first prompt of a session (not a slash command, not a resumed session), one call to the small, fast model rates the prompt `simple`, `moderate` or `complex`.
+2. The rating suggests a model: `simple` to `haiku`, `moderate` to `sonnet`, `complex` to `opus`. When the suggestion differs from the model you are on, a dialog asks whether to switch or keep your current model. Under "Other" you can type a model name, such as `use sonnet`.
+3. In the desktop app, a `complex` rating also offers **Open in a new session**.
+4. The dialog also offers **Refine prompt**, which reviews the prompt and puts an improved version in the prompt box.
+5. Each rating sets a minimum effort: none for `simple`, `medium` for `moderate`, `high` for `complex`.
+
+When the suggestion matches your current model, nothing is asked, except that in the desktop app a `complex` prompt still offers the new session. Dismissing the dialog, or a failed rating, sends the prompt unchanged.
+
+A model switch applies to the main conversation for the rest of the session. Subagents keep their own models. The status line shows `running <name>, not <session model>` while it is in effect, and running `/model` yourself ends the override.
+
+## Install
+
+Inside Claude Code:
+
+```text
+/plugin install prompt-triage --marketplace shawn-sandy/prompt-triage
+```
+
+From a shell:
+
+```bash
+claude plugin install prompt-triage --marketplace shawn-sandy/prompt-triage
+```
+
+In the desktop app, where `/plugin` does not run, open Customize > Plugins and add the marketplace `shawn-sandy/prompt-triage`. The default install scope is `user`; add `--scope project` or `--scope local` to change it.
+
+The plugin needs a Claude Code release that supports mods. It loads in the terminal, the IDE extensions and the Code tab of the desktop app. Chat and Cowork do not load hooks.
+
+## Cost and data
+
+The cost is one small classification request on the first prompt of each session. Later prompts are not checked. Each **Refine prompt** or `/refine-prompt` adds one `haiku` request, and a second when you answer its questions.
+
+The text of your first prompt is sent once per session to the small, fast model to get the rating. When you refine a prompt, it is also sent to `haiku` for the review. The plugin does not persist prompt data, the model override or the effort minimum; they are held in memory for the session. It writes no files and makes no network requests of its own.
+
+## Limits worth knowing
+
+- The first prompt waits for the rating, and for your answer when a question is shown.
+- The model override and the effort minimum live in the plugin's memory. If the plugin reloads, the session goes back to its own model and effort.
+- The effort minimum is set from the first prompt only. A different task later in the session does not change it.
+- A `complex` prompt on a model above opus is not offered a switch to opus.
+- **Open in a new session** works by asking Claude to call `start_session`, so it depends on Claude following that instruction.
+
+The [README](https://github.com/shawn-sandy/prompt-triage#limits) lists the rest. For the details of each part, read the posts on [the first-prompt rating](/posts/post-1), [the effort floor](/posts/post-2), [refining a prompt](/posts/refine-prompt) and [the six hooks](/posts/hooks).

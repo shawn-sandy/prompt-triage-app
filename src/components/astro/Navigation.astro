@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE } from '#utils/site-config'
+import { PLUGIN_REPO_URL, SITE_TITLE } from '#utils/site-config'
 
 /**
  * Primary site navigation.
@@ -132,6 +132,9 @@ const {
       </li>
       <li>
         <a href="/contact">Contact</a>
+      </li>
+      <li>
+        <a href={PLUGIN_REPO_URL}>GitHub</a>
       </li>
     </ul>
     <slot />

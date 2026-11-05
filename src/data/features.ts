@@ -1,6 +1,6 @@
 /**
  * Features data for displaying on the home page
- * This file contains all the main features of the astro-basics project
+ * This file contains the main features of the prompt-triage plugin
  * that will be displayed using the Card component
  */
 
@@ -23,70 +23,61 @@ export type FeatureCard = {
 }
 
 /**
- * Main features of the astro-basics project
- * Easy to update - just modify this array to add/remove/update features
+ * Main features of the prompt-triage plugin, each worded from its README.
+ * Easy to update - just modify this array to add/remove/update features.
+ *
+ * Titles and descriptions avoid apostrophes and double quotes on purpose: the
+ * promoted tier prints each description as escaped source, and the unit test
+ * that checks that output compares against a text-only escape.
  */
 export const projectFeatures: FeatureCard[] = [
   {
-    title: 'Content Management System',
+    title: 'Rates your first prompt',
     description:
-      'Powerful content collections with MDX support, RSS feeds, tagging system, and publication workflow. Perfect for blogs, documentation, and content-rich websites.',
+      'One call to a small, fast model rates the first prompt of each session as simple, moderate or complex, then suggests haiku, sonnet or opus. If that differs from your current model, a dialog lets you switch or keep it.',
+    link: '/posts/post-1',
     category: 'core',
     priority: 100,
   },
   {
-    title: 'Authentication & Security',
+    title: 'Refine before you send',
     description:
-      'Complete Clerk integration with protected routes, user management, and security utilities. XSS protection, input validation, and trusted domain validation built-in.',
-    category: 'security',
+      'Pick Refine prompt, or run /refine-prompt on any prompt. A haiku review flags a missing goal, vague scope and unfilled placeholders, asks up to three questions, then puts a rewrite in the prompt box for you to edit.',
+    link: '/posts/refine-prompt',
+    category: 'core',
     priority: 95,
   },
   {
-    title: 'Progressive Web App',
+    title: 'Raises effort, never lowers it',
     description:
-      'Full PWA implementation with offline support, service workers, install prompts, and native app-like experience. Works seamlessly across all devices.',
-    category: 'user-experience',
+      'Moderate prompts get an effort floor of medium and complex prompts get high. Effort already at or above the floor is left alone, and running /effort yourself ends the floor.',
+    link: '/posts/post-2',
+    category: 'core',
     priority: 90,
   },
   {
-    title: 'Component Library',
+    title: 'Hands off to a new session',
     description:
-      '30+ Astro components plus React components for building modern websites. Layout, content display, forms, media, and utility components included.',
-    image: 'https://picsum.photos/400/250?random=4',
-    category: 'development',
+      'In the desktop app, a complex prompt can be moved to a fresh session. The plugin adds an instruction asking Claude to call start_session, so it depends on Claude following that instruction.',
+    link: '/posts/post-1#open-in-a-new-session',
+    category: 'user-experience',
     priority: 85,
   },
   {
-    title: 'Accessibility First',
+    title: 'Light on cost and data',
     description:
-      'Built-in screen reader support, keyboard navigation, text-to-speech integration, and comprehensive accessibility testing. WCAG compliant design patterns.',
-    image: 'https://picsum.photos/400/250?random=5',
-    category: 'user-experience',
+      'One small classification request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. The plugin stores nothing, writes no files and makes no network requests of its own.',
+    link: '/content#cost-and-data',
+    category: 'security',
     priority: 80,
   },
   {
-    title: 'Developer Experience',
+    title: 'Runs where Claude Code runs',
     description:
-      'Comprehensive testing suite with Playwright and Vitest, TypeScript support, ESLint, Prettier, and automated quality checks. Hot reloading and SCSS compilation.',
-    image: 'https://picsum.photos/400/250?random=6',
+      'Loads in the terminal, the IDE extensions and the Code tab of the desktop app. Chat and Cowork do not load hooks. Six hooks, MIT licensed, tests run with claude plugin test .',
+    link: '/content#install',
     category: 'development',
     priority: 75,
-  },
-  {
-    title: 'Multi-Platform Deployment',
-    description:
-      'Deploy to Netlify, Vercel, or Node.js with automatic adapter selection. Server-side rendering, performance optimization, and monitoring included.',
-    image: 'https://picsum.photos/400/250?random=7',
-    category: 'development',
-    priority: 70,
-  },
-  {
-    title: 'Media & Content Integration',
-    description:
-      'YouTube embedding, image optimization with Sharp, responsive images, social media integration, and rich content embedding capabilities.',
-    image: 'https://picsum.photos/400/250?random=8',
-    category: 'core',
-    priority: 65,
   },
 ]
 
