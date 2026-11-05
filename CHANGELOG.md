@@ -308,6 +308,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Tag pages rendered an empty body** (`src/pages/tags/[tag].astro`): the site runs in server mode,
+  where Astro ignores `getStaticPaths` props for a page that is not prerendered, so every tag page
+  received no posts. The page now sets `prerender = true`, like `/blog` and the post and article
+  list pages. Each post is wrapped in a list item, because a `ul` holding headings directly is an
+  axe `list` violation that the empty list had hidden. The page, the tag index and the sidebar
+  `TagList` now build their tags with `post.data.tags ?? []`, so a post without tags cannot add an
+  `undefined` route parameter or a link to a `/tags/undefined` page that does not exist.
+  `tests/components/tag-page.test.ts` and `tests/components/post-list-links.test.ts` cover these
 - **"Latest posts" links pointed at `/posts/undefined`** (`src/components/astro/CollectionList.astro`,
   `src/components/astro/PostsList.astro`): both built each link from `post.slug`, which content-layer
   entries do not have. They now use `post.id`, the value the post detail routes take.

@@ -3,10 +3,15 @@ import { getCollection } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
 import BlogPost from '../../components/astro/BlogPosts.astro'
 
+// The site runs in server mode, where Astro ignores `getStaticPaths` props for a page that is not
+// prerendered. Without this the page received no posts and rendered an empty body.
+export const prerender = true
+
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts')
 
-  const uniqueTags = [...new Set(allPosts.map(post => post.data.tags).flat())]
+  // `tags` is optional; a tagless post must not become an `undefined` route parameter.
+  const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags ?? []))]
 
   return uniqueTags.map(tag => {
     const filteredPosts = allPosts.filter(post => {
@@ -29,11 +34,13 @@ const { posts } = Astro.props
   <ul data-list="unstyled">
     {
       posts?.map(post => (
-        <BlogPost
-          url={`/posts/${post.id}`}
-          title={post.data.title}
-          description={post.data.description}
-        />
+        <li>
+          <BlogPost
+            url={`/posts/${post.id}`}
+            title={post.data.title}
+            description={post.data.description}
+          />
+        </li>
       ))
     }
   </ul>

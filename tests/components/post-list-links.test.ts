@@ -66,4 +66,24 @@ describe('post links on list pages', () => {
     expect(posts.length).toBeGreaterThan(0)
     expect(hrefsUnder(body, '/posts/').sort()).toEqual(posts.map(p => `/posts/${p.id}`).sort())
   })
+
+  it('a tag page puts each post inside a list item', async () => {
+    const posts = await getCollection(
+      'posts',
+      ({ data }) => data.tags?.includes('claude-code') === true
+    )
+    const html = await render(TagPage, { params: { tag: 'claude-code' }, props: { posts } })
+    const body = /<article[\s\S]*?<\/article>/.exec(html)?.[0] ?? ''
+    const list = /<ul data-list="unstyled"[^>]*>([\s\S]*?)<\/ul>/.exec(body)?.[1] ?? ''
+
+    expect(posts.length).toBeGreaterThan(1)
+
+    // One item per post. This also fails if the list pattern above matched nothing, or if every
+    // post sat inside a single `li`.
+    expect(list.match(/<li\b/g)).toHaveLength(posts.length)
+
+    // A `ul` may only contain `li`. What is left after removing the items is a direct child, which
+    // axe reports as a serious `list` violation once the list has content.
+    expect(list.replace(/<li[\s\S]*?<\/li>/g, '').trim()).toBe('')
+  })
 })
