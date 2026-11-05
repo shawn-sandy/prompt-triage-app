@@ -603,6 +603,7 @@ nav[data-site-nav]:has(> [popover]) > button[popovertarget]:focus-visible {
   border-color: color-mix(in srgb, currentcolor 30%, transparent);
 }
 nav[data-site-nav]:has(> [popover]) > [data-nav-brand] {
+  font-size: 1.5rem;
   font-weight: 600;
   text-decoration: none;
 }

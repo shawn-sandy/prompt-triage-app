@@ -21,7 +21,7 @@ export const BREADCRUMB_ROUTE = [
   },
 ]
 
-export const SITE_TITLE = 'prompt-triage'
+export const SITE_TITLE = 'Prompt Triage'
 export const SITE_DESCRIPTION =
   'A Claude Code plugin that rates your first prompt, suggests the right model, raises low effort and helps you refine vague prompts.'
 export const SITE_LOGO = '/logo.png'
