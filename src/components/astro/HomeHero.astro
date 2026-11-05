@@ -115,12 +115,15 @@ const installLink = `${PLUGIN_REPO_URL}#install`
   if (button && command && status && navigator.clipboard) {
     button.hidden = false
     button.addEventListener('click', async () => {
+      // Cleared first so a repeat click inside the reset window still changes
+      // the live region and is announced again.
+      status.textContent = ''
       try {
         await navigator.clipboard.writeText(command.textContent ?? '')
         button.textContent = 'Copied'
         status.textContent = 'Install command copied'
       } catch {
-        button.textContent = 'Copy failed'
+        button.textContent = 'Failed'
         status.textContent = 'Could not copy the install command'
       }
       window.clearTimeout(resetTimer)
@@ -440,6 +443,10 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     flex-shrink: 0;
     font-size: 0.75rem;
     font-weight: 600;
+
+    /* Wide enough for the longest label ("Copied"), so swapping labels never
+       resizes the button and reflows the wrapped command beside it. */
+    min-inline-size: 5.75em;
     padding: 0.375rem 0.75rem;
     transition:
       background-color var(--transition-duration-150, 150ms) ease-out,
