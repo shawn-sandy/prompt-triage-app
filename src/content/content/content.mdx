@@ -27,8 +27,8 @@ A model switch applies to the main conversation for the rest of the session. Sub
 
 Two parts of the plugin work on any prompt in the session, not only the first:
 
-- **The refine band.** While you type a draft of 40 characters or more, a band above the prompt input offers Goal, Workflow and Scope pickers and a **Refine** button. See [refining a prompt](/posts/refine-prompt#the-refine-band).
-- **Run in.** In the desktop app the band also has a **Run in** picker. Set it to **New session** and press Enter, and that prompt is sent with the new-session instruction instead of running here. The pick applies to one send, then reads **This session** again. The terminal draws no Run in picker.
+- **The refine band.** While you type a draft of 40 characters or more, or one with a line break, a band above the prompt input offers Goal, Workflow and Scope pickers and a **Refine** button. See [refining a prompt](/posts/refine-prompt#the-refine-band).
+- **Run in.** In the desktop app the band also has a **Run in** picker. Set it to **New session** and press Enter, and that prompt is sent with the new-session instruction instead of running here. The pick applies to one send, then reads **This session** again. A prompt typed while Claude is still working runs in this session and leaves the pick armed for your next send. The terminal draws no Run in picker.
 
 ## Install
 
@@ -48,7 +48,7 @@ In the desktop app, where `/plugin` does not run, open Customize > Plugins and a
 
 The plugin needs a Claude Code release that supports mods. It loads in the terminal, the IDE extensions and the Code tab of the desktop app. Chat and Cowork do not load hooks.
 
-The plugin's `band` option in the config menu sets when the refine band shows: `long` (the default) for drafts of 40 characters or more or with a line break, `always` for any draft, or `never` (Run in still shows in the desktop app).
+The plugin's `band` option in the config menu sets when the refine band shows: `long` (the default) for drafts of 40 characters or more or with a line break, `always` for any draft that is not empty or a slash command, or `never` (Run in still shows in the desktop app).
 
 ## Cost and data
 
