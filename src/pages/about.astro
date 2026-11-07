@@ -6,9 +6,9 @@ const pageTitle = 'About'
 
 const facts = [
   'It runs in Claude Code: the terminal, the IDE extensions and the Code tab of the desktop app.',
-  'It costs one small classification request on the first prompt of each session. Refining a prompt adds one haiku request (two if you answer its questions), and refining from the first-prompt dialog adds one more classification when you send the rewrite.',
-  'It stores nothing, writes no files and makes no network requests of its own.',
-  'All of its logic is in one file, hooks/register.ts, with tests you run using claude plugin test .',
+  'It costs one haiku request on the first prompt of each session. Refining a prompt adds one haiku request (two if you answer its questions), and refining from the first-prompt dialog adds one more classification when you send the rewrite.',
+  'It does not store your prompts. The only thing it saves across sessions is your Goal, Workflow and Scope picks in the refine band. It writes no files and makes no network requests of its own.',
+  'All of its logic, nine hooks and one command, is in hooks/register.ts, with tests you run using claude plugin test .',
   'It is released under the MIT License.',
 ]
 ---
@@ -27,9 +27,10 @@ const facts = [
   </p>
 
   <p>
-    It can also review a prompt before you send it and put an improved version in the prompt box. In
-    the Claude desktop app it can offer to hand a complex task to a new session, by asking Claude to
-    start one.
+    It can also review a prompt before you send it and put an improved version in the prompt box,
+    from the first-prompt dialog, the /refine-prompt command or the refine band above the prompt
+    input. In the Claude desktop app it can hand a complex or long-running task, or any prompt you
+    pick, to a new session, by asking Claude to start one.
   </p>
   <p>A few facts:</p>
   <ul>
