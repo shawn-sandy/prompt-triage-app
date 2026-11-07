@@ -27,7 +27,7 @@ In the terminal and the desktop app, a band above the prompt input offers the re
 Refine  Goal: Auto  Workflow: As written  Scope: As written  Run in: This session   [r] Refine
 ```
 
-The band shows when the draft is not empty, is not a slash command, and is 40 characters or longer or has a line break. The plugin's `band` option in the config menu changes that rule: `always` drops the length rule, so it shows for any draft that is not empty or a slash command, and `never` hides it, though Run in still shows in the desktop app. **Run in** is drawn in the desktop app only, and sends a prompt to a new session.
+The band shows when the draft is not empty, is not a slash command, and is 40 characters or longer or has a line break. The plugin's `band` option in the config menu changes that rule: `always` drops the length rule, so it shows for any draft that is not empty or a slash command, and `never` hides it, though Run in still shows in the desktop app. **Run in** is drawn in the desktop app only, and asks Claude to run the prompt in a new session.
 
 Each picker adds one instruction to the review. Each one's default adds none, so with no picks the review is the same as **Refine prompt** and `/refine-prompt`.
 

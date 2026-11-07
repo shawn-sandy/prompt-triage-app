@@ -53,7 +53,8 @@ the session itself, so this depends on Claude following that instruction.
 
 For any later prompt in the desktop app, the **Run in** picker in the band above the prompt input does the same: set it
 to **New session** and press Enter. That prompt is sent with no rating and no model dialog, since the
-new session rates its own first prompt.
+new session rates its own first prompt. A prompt typed while Claude is still working runs in this
+session and leaves the pick armed for your next send.
 
 ## What stays unchanged
 
