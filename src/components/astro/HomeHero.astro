@@ -31,7 +31,7 @@
  *   slot="header"
  *   eyebrow="Claude Code plugin / MIT licensed"
  *   headline="Pick the right model before the first prompt runs."
- *   deck="Rates your first prompt and suggests haiku, sonnet or opus."
+ *   deck="Rates your first prompt and suggests haiku, sonnet, opus or fable."
  * />
  * ```
  */
@@ -50,14 +50,15 @@ export type Props = {
 const {
   eyebrow = 'Claude Code plugin / MIT licensed',
   headline = 'Pick the right model before the first prompt runs.',
-  deck = 'A Claude Code plugin that rates your first prompt, suggests haiku, sonnet or opus to match, and raises effort when it is set too low.',
+  deck = 'A Claude Code plugin that rates your first prompt, suggests haiku, sonnet, opus or fable to match, and raises effort when it is set too low.',
 } = Astro.props as Props
 
 // An illustration of the dialog described in the README, not a screenshot: a
 // complex prompt on sonnet, where opus is suggested and the effort floor is high.
+// The dialog opens with the one-line restatement the rating call returns.
 const specimenTitle = 'Rated complex'
 const specimenBody =
-  'You are on sonnet. Switch to opus, keep sonnet, or refine the prompt first. Whichever model you pick, effort is raised to at least high.'
+  'Read as: add a retry limit to the upload client. You are on sonnet. Switch to opus, keep sonnet, or refine the prompt first. Whichever model you pick, effort is raised to at least high.'
 
 // The overview article, and the destination for both the secondary CTA and the
 // specimen card. Not `/docs`: that route calls `getEntry('docs', '0-welcome')`
@@ -84,9 +85,9 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     </div>
 
     <p class="home-hero__legend">
-      <b>One classification call per session,</b> plus a haiku call when you refine a prompt, and a second
-      rating if you refine from the first-prompt dialog. Nothing is stored, and the plugin makes no network
-      requests of its own.
+      <b>One haiku call per session,</b> plus one when you refine a prompt (two if you answer its questions),
+      and a second rating if you refine from the first-prompt dialog. Prompts are never stored, and the
+      plugin makes no network requests of its own.
     </p>
   </div>
 

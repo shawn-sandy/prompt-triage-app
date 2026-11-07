@@ -34,7 +34,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Rates your first prompt',
     description:
-      'One call to a small, fast model rates the first prompt of each session as simple, moderate or complex, then suggests haiku, sonnet or opus. If that differs from your current model, a dialog lets you switch or keep it.',
+      'One haiku call rates the first prompt of each session as simple, moderate, complex or long-running, then suggests haiku, sonnet, opus or fable. If that differs from your current model, a dialog lets you switch or keep it, and unless the prompt is simple it restates what the prompt asks for so a misread shows early.',
     link: '/posts/post-1',
     category: 'core',
     priority: 100,
@@ -42,23 +42,23 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Refine before you send',
     description:
-      'Pick Refine prompt, or run /refine-prompt on any prompt. A haiku review flags a missing goal, vague scope and unfilled placeholders, asks up to three questions, then puts a rewrite in the prompt box for you to edit.',
+      'Pick Refine prompt, run /refine-prompt, or press Refine in the band above the prompt input, where Goal, Workflow and Scope pickers shape the review. It flags a missing goal, vague scope and unfilled placeholders, asks up to three questions, then puts a rewrite in the prompt box.',
     link: '/posts/refine-prompt',
     category: 'core',
     priority: 95,
   },
   {
-    title: 'Raises effort, never lowers it',
+    title: 'Sets effort to match the task',
     description:
-      'Moderate prompts get an effort floor of medium and complex prompts get high. Effort already at or above the floor is left alone, and running /effort yourself ends the floor.',
+      'Moderate prompts get an effort floor of medium; complex and long-running prompts get high. For a simple prompt you can keep your model and drop effort to low instead. Running /effort yourself ends either change.',
     link: '/posts/post-2',
     category: 'core',
     priority: 90,
   },
   {
-    title: 'Hands off to a new session',
+    title: 'Sends work to a new session',
     description:
-      'In the desktop app, a complex prompt can be moved to a fresh session. The plugin adds an instruction asking Claude to call start_session, so it depends on Claude following that instruction.',
+      'In the desktop app, a complex or long-running first prompt can be moved to a fresh session, and the Run in picker sends any prompt there. The plugin adds an instruction asking Claude to call start_session, so it depends on Claude following it.',
     link: '/posts/post-1#open-in-a-new-session',
     category: 'user-experience',
     priority: 85,
@@ -66,7 +66,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Light on cost and data',
     description:
-      'One small classification request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. Refining from the first-prompt dialog also rates the rewrite again. The plugin stores nothing, writes no files and makes no network requests of its own.',
+      'One haiku request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. Refining from the first-prompt dialog also rates the rewrite again. Only your band picks are saved; prompts are not, and the plugin writes no files and makes no network requests of its own.',
     link: '/content#cost-and-data',
     category: 'security',
     priority: 80,
@@ -74,7 +74,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Runs where Claude Code runs',
     description:
-      'Loads in the terminal, the IDE extensions and the Code tab of the desktop app. Chat and Cowork do not load hooks. Six hooks, MIT licensed, tests run with claude plugin test .',
+      'Loads in the terminal, the IDE extensions and the Code tab of the desktop app. Chat and Cowork do not load hooks. Nine hooks, MIT licensed, tests run with claude plugin test .',
     link: '/content#install',
     category: 'development',
     priority: 75,

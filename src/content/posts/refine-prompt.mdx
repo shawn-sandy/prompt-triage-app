@@ -1,7 +1,7 @@
 ---
 title: 'Refine a prompt before you send it'
 pubDate: 2026-11-05T10:00:00Z
-description: 'How Refine prompt and /refine-prompt review a prompt, ask up to three questions and put a rewrite in the prompt box.'
+description: 'How Refine prompt, /refine-prompt and the refine band review a prompt, ask up to three questions and put a rewrite in the prompt box.'
 author: 'Shawn Sandy'
 tags: ['claude-code', 'prompt-triage', 'prompts']
 publish: true
@@ -19,6 +19,35 @@ For any prompt, at any point in the session:
 
 It asks the same questions, shows the issues and puts the rewrite in the prompt box. Nothing is sent until you press Enter. Versions up to 0.3.3 called this command `/improve`; that name no longer runs.
 
+## The refine band
+
+In the terminal and the desktop app, a band above the prompt input offers the review while you type, for any prompt in the session:
+
+```text
+Refine  Goal: Auto  Workflow: As written  Scope: As written  Run in: This session   [r] Refine
+```
+
+The band shows when the draft is not empty, is not a slash command, and is 40 characters or longer or has a line break. The plugin's `band` option in the config menu changes that rule: `always` shows it for any draft and `never` hides it, though Run in still shows in the desktop app. **Run in** is drawn in the desktop app only, and sends a prompt to a new session.
+
+Each picker adds one instruction to the review. Each one's default adds none, so with no picks the review is the same as **Refine prompt** and `/refine-prompt`.
+
+| Picker   | Pick                 | What the review does                                                                                                        |
+| -------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Goal     | Auto (default)       | Flags a missing done-condition, as the review always has.                                                                   |
+| Goal     | Add a check          | Ends the rewrite with what done looks like and a check Claude can run, and asks for the command and its output as evidence. |
+| Goal     | Off                  | Skips the goal and done-criteria checks.                                                                                    |
+| Workflow | As written (default) | Adds no workflow.                                                                                                           |
+| Workflow | Plan first           | Asks Claude to read the code and propose a plan, with no edits until you approve.                                           |
+| Workflow | Interview me         | Rewrites the prompt as a request to interview you until Claude could write the spec, then write it to `SPEC.md`.            |
+| Workflow | Test first           | For a bug: describe the symptom, write a failing test that reproduces it, then fix it.                                      |
+| Scope    | As written (default) | No change.                                                                                                                  |
+| Scope    | Minimal              | Limits the change to what was asked: no extra files, abstractions or refactors.                                             |
+| Scope    | Ambitious            | Asks for the fuller version you want, and which extras, rather than inventing them.                                         |
+
+Your picks are saved in the plugin's store and come back next session. **Refine prompt** in the model dialog and `/refine-prompt` use the same picks.
+
+Press **Refine** (`r` once the band has focus, or a click) to review the draft. It asks the same questions as **Refine prompt**, then puts the rewrite in the prompt box, and the band shows the number of issues, **Show issues**, **Restore original** (puts back the draft you had) and **Done**. If you keep typing or send a prompt during the review, the prompt box is left alone and a toast asks you to press **Refine** again. If the review fails, a toast says so and the draft is unchanged.
+
 ## Questions, answers and the path check
 
 When the fix needs a fact only you know, such as which files are in scope, the review asks first: up to three questions, one dialog each, with likely answers to pick or your own under "Other". A second `haiku` call then rewrites the prompt with your answers and lists only the issues your answers left unfixed. Dismissing a question skips the rest, and the answers given so far are still used.
@@ -27,4 +56,4 @@ Paths that the prompt or the rewrite names, such as `src/auth.ts`, are checked a
 
 ## What it costs
 
-Each refinement adds one `haiku` request, and a second when you answer its questions. Choosing **Refine prompt** skips the model choice for that prompt; the choice is offered again when you send the rewrite, and the rewrite is rated again, which is one more classification request, without a second refine offer.
+Each refinement adds one `haiku` request, and a second when you answer its questions. The band makes no request while you type. Choosing **Refine prompt** skips the model choice for that prompt; the choice is offered again when you send the rewrite, and the rewrite is rated again, which is one more classification request, without a second refine offer.
