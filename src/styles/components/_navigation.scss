@@ -11,6 +11,20 @@
 // `nav` / `nav > button[popovertarget]` selectors would style a consumer's own
 // popover navigation on the same page.
 
+// Dark page: the original mark, a dark tile with light strokes. The SVG in
+// Navigation.astro carries the light-page look as attributes (tile hidden, ink
+// `#131313`); these declarations override them, since CSS beats a presentation
+// attribute. Used under both dark paths below, which mirror _design-tokens.scss.
+@mixin nav-brand-dark {
+  > [data-nav-brand] [data-logo-tile] {
+    display: inline;
+  }
+
+  > [data-nav-brand] [data-logo-ink] {
+    stroke: #ececec;
+  }
+}
+
 nav[data-site-nav]:has(> [popover]) {
   // Neither the bar nor the panel picks its own colour: both follow whatever
   // the page sets. The `--card-*` tokens flip under `prefers-color-scheme:
@@ -76,6 +90,18 @@ nav[data-site-nav]:has(> [popover]) {
     margin-inline-end: var(--space-2);
     vertical-align: middle;
     width: 3rem;
+  }
+
+  // OS preference, unless the page has chosen the light theme explicitly.
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) & {
+      @include nav-brand-dark;
+    }
+  }
+
+  // Explicit dark toggle, which wins over the OS preference.
+  :root[data-theme="dark"] & {
+    @include nav-brand-dark;
   }
 
   // On phones the logo alone is the brand. The name stays in the accessible

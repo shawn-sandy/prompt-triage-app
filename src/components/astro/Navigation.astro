@@ -111,14 +111,23 @@ const {
   {
     showBrand && (
       <a href={brandHref} data-nav-brand>
-        {/* Inline, not a /images URL: package.json ships only src/components, so a public asset never reaches consumers. Sized in _navigation.scss. */}
+        {/* Inline, not a /images URL: package.json ships only src/components, so a public asset never reaches consumers. Sized in _navigation.scss. The tile is hidden here; dark mode shows it and lightens the ink in _navigation.scss. */}
         <svg
           viewBox="56 46 400 400"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
           focusable="false"
         >
-          <rect x="56" y="46" width="400" height="400" rx="40" fill="#131313" />
+          <rect
+            data-logo-tile
+            x="56"
+            y="46"
+            width="400"
+            height="400"
+            rx="40"
+            fill="#131313"
+            display="none"
+          />
           <path
             d="M181 385.9 A150 150 0 0 1 108.28 282.05"
             fill="none"
@@ -127,9 +136,10 @@ const {
             stroke-linecap="round"
           />
           <path
+            data-logo-ink
             d="M108.28 229.95 A150 150 0 0 1 256 106"
             fill="none"
-            stroke="#ECECEC"
+            stroke="#131313"
             stroke-width="34"
             stroke-linecap="round"
           />
@@ -141,9 +151,10 @@ const {
             stroke-linecap="round"
           />
           <path
+            data-logo-ink
             d="M237 228 L271 256 L237 284"
             fill="none"
-            stroke="#ECECEC"
+            stroke="#131313"
             stroke-width="30"
             stroke-linecap="round"
             stroke-linejoin="round"
