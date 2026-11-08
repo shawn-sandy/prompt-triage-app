@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
+import { readFileSync } from 'node:fs'
+import { compile } from 'sass'
 import Navigation from '#components/astro/Navigation.astro'
 
 /** Read an attribute value out of a raw opening tag, e.g. `<div id="x">`. */
@@ -98,6 +100,90 @@ describe('Navigation.astro popover markup contract', () => {
     expect(logo).toBeDefined()
     expect(attr(logo as string, 'aria-hidden')).toBe('true')
     expect(brandHtml).toMatch(/<span\b[^>]*\bdata-nav-brand-name\b/)
+  })
+
+  it('marks the logo tile and ink so dark mode can restore the original mark', async () => {
+    // Light mode paints the bare mark; dark mode swaps in the tile and light
+    // strokes from CSS. That only works if the markup carries the hooks, and
+    // if the tile is hidden by default rather than painted on the light page.
+    const html = await render()
+    const brandHtml = /<a\b[^>]*\bdata-nav-brand\b[^>]*>([\s\S]*?)<\/a>/.exec(html)?.[1] ?? ''
+    const tile = /<rect\b[^>]*\bdata-logo-tile\b[^>]*>/.exec(brandHtml)?.[0]
+
+    expect(tile).toBeDefined()
+    expect(attr(tile as string, 'display')).toBe('none')
+    expect(brandHtml.match(/<path\b[^>]*\bdata-logo-ink\b/g)).toHaveLength(2)
+  })
+
+  describe.each([
+    ['compiled from index.scss', () => compile('src/styles/index.scss').css],
+    ['the committed index.css', () => readFileSync('src/styles/index.css', 'utf8')],
+  ])('dark-mode logo rules, %s', (_label, load) => {
+    /** Split CSS into dark-media-query bodies and everything outside them. */
+    function split(css: string): { dark: string[]; outside: string } {
+      const dark: string[] = []
+      let outside = ''
+      let i = 0
+      const head = /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{/g
+      for (let m = head.exec(css); m; m = head.exec(css)) {
+        outside += css.slice(i, m.index)
+        let depth = 1
+        let j = m.index + m[0].length
+        while (j < css.length && depth > 0) {
+          if (css[j] === '{') depth++
+          else if (css[j] === '}') depth--
+          j++
+        }
+        dark.push(css.slice(m.index + m[0].length, j - 1))
+        i = j
+        head.lastIndex = j
+      }
+      return { dark, outside: outside + css.slice(i) }
+    }
+    const rulesFor = (css: string, hook: string) =>
+      [...css.matchAll(new RegExp(`([^{}]*\\[${hook}\\][^{}]*)\\{([^}]*)\\}`, 'g'))].map(m => ({
+        selector: m[1],
+        body: m[2],
+      }))
+
+    it('applies the OS-preference rules only inside the dark media query', () => {
+      const { dark, outside } = split(load())
+      const inDark = dark.flatMap(body => rulesFor(body, 'data-logo-tile'))
+      const inkInDark = dark.flatMap(body => rulesFor(body, 'data-logo-ink'))
+
+      // Inside the dark query: the path that yields to an explicit light theme.
+      expect(inDark.some(rule => /:not\(\[data-theme=["']?light/.test(rule.selector))).toBe(true)
+      expect(inkInDark.some(rule => /:not\(\[data-theme=["']?light/.test(rule.selector))).toBe(true)
+
+      // Outside it: only the explicit dark toggle may touch the tile or ink.
+      for (const hook of ['data-logo-tile', 'data-logo-ink']) {
+        for (const rule of rulesFor(outside, hook)) {
+          expect(rule.selector).toMatch(/data-theme=["']?dark/)
+          expect(rule.selector).not.toMatch(/:not\(/)
+        }
+      }
+    })
+
+    it('shows the tile and sets light ink for the explicit dark toggle', () => {
+      const { outside } = split(load())
+      const tile = rulesFor(outside, 'data-logo-tile')
+      const ink = rulesFor(outside, 'data-logo-ink')
+
+      expect(tile).toHaveLength(1)
+      expect(ink).toHaveLength(1)
+      expect(tile[0].body).toMatch(/display:\s*inline/)
+      expect(ink[0].body).toMatch(/stroke:\s*#ececec/i)
+    })
+
+    it('uses the same declarations on the OS-preference path', () => {
+      const { dark } = split(load())
+      const tile = dark.flatMap(body => rulesFor(body, 'data-logo-tile'))
+      const ink = dark.flatMap(body => rulesFor(body, 'data-logo-ink'))
+
+      expect(tile.length).toBeGreaterThan(0)
+      for (const rule of tile) expect(rule.body).toMatch(/display:\s*inline/)
+      for (const rule of ink) expect(rule.body).toMatch(/stroke:\s*#ececec/i)
+    })
   })
 
   it('hides the hamburger icon from assistive tech and the tab order', async () => {
