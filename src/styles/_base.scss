@@ -244,6 +244,62 @@ article > figure > img[alt] {
   min-width: 100%;
 }
 
+// Prose tables. The vendor table has no borders, no header treatment, and
+// 1px cell padding. Rules use the hairline token; the header row is a tone
+// step, not the accent (The Hydration Rule).
+article th,
+article td {
+  border-block-end: var(--border-width-1) solid var(--rule);
+  overflow-wrap: anywhere;
+  padding: var(--space-2) var(--space-3);
+  text-align: start;
+  vertical-align: top;
+}
+
+article th {
+  background-color: var(--paper-sunk);
+  color: var(--ink);
+  font-weight: var(--font-weight-semibold);
+}
+
+// Quotations. A tone step and a 1px hairline, never a coloured side stripe.
+article blockquote {
+  background-color: var(--paper-sunk);
+  border: var(--border-width-1) solid var(--rule);
+  border-radius: var(--radius-lg);
+  color: var(--ink-soft);
+  margin-inline: 0;
+  padding: var(--space-3) var(--space-4);
+}
+
+article blockquote > :first-child {
+  margin-block-start: 0;
+}
+
+article blockquote > :last-child {
+  margin-block-end: 0;
+}
+
+// Code blocks. Sunk Paper surface with squared corners (DESIGN.md code-block
+// token). The inner <code> carried its own padding, which doubled the spacing.
+// Overflow scrolls inside the block so a long line cannot widen the page at 320px.
+article pre {
+  background-color: var(--paper-sunk);
+  border-radius: 0;
+  overflow-x: auto;
+  padding: var(--space-4);
+}
+
+article pre code {
+  font-size: inherit;
+  padding: 0;
+}
+
+article h2,
+article h3 {
+  text-wrap: balance;
+}
+
 img + * {
   padding-block-start: 1rem;
 }
