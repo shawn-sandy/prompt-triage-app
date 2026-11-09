@@ -38,6 +38,8 @@ export default defineConfig({
     starlight({
       title: 'Astro-Basics Guide',
       disable404Route: true,
+      // Long code lines wrap by default. A fence can still opt out with `wrap=false`.
+      expressiveCode: { defaultProps: { wrap: true } },
       // Social links (array format for v0.35.2)
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/shawn-sandy/astro-basics' },
