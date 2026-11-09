@@ -295,6 +295,15 @@ article pre code {
   padding: 0;
 }
 
+// Expressive Code sets its own code lines to `white-space: pre` inside a
+// layer. This unlayered rule overrides it, so long lines wrap instead of
+// scrolling sideways.
+article .expressive-code pre,
+article .expressive-code .ec-line {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
 article h2,
 article h3 {
   text-wrap: balance;
