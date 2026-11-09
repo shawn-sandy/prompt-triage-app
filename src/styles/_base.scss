@@ -247,6 +247,14 @@ article > figure > img[alt] {
 // Prose tables. The vendor table has no borders, no header treatment, and
 // 1px cell padding. Rules use the hairline token; the header row is a tone
 // step, not the accent (The Hydration Rule).
+// Wide tables scroll inside their own box instead of widening the page at
+// 320px (The 320 Rule). Eight columns of cell padding alone exceed 256px.
+article table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 article th,
 article td {
   border-block-end: var(--border-width-1) solid var(--rule);
