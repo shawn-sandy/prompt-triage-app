@@ -93,7 +93,7 @@ const installLink = `${PLUGIN_REPO_URL}#install`
   </div>
 
   <figure class="home-hero__specimen">
-    <figcaption class="home-hero__specimen-label">Example dialog</figcaption>
+    <figcaption class="home-hero__specimen-label" data-ui="terminal-bar">Example dialog</figcaption>
     <div class="home-hero__specimen-body">
       <Card cardTitle={specimenTitle} cardLink={howItWorksLink}>
         <p>{specimenBody}</p>
@@ -153,13 +153,13 @@ const installLink = `${PLUGIN_REPO_URL}#install`
      * `_design-tokens.scss` defines them, the tokens win and dark mode flips
      * every surface here with the rest of the page.
      */
-    --hero-ink: var(--ink, #101418);
-    --hero-ink-soft: var(--ink-soft, #5a6472);
-    --hero-paper: var(--paper, #fcfcfd);
-    --hero-paper-sunk: var(--paper-sunk, #f1f3f5);
-    --hero-island: var(--island, #0b6070);
-    --hero-island-bg: var(--island-bg, #e6f2f6);
-    --hero-rule: var(--rule, #dde1e6);
+    --hero-ink: var(--ink, #131313);
+    --hero-ink-soft: var(--ink-soft, #5d5d5d);
+    --hero-paper: var(--paper, #fcfcfc);
+    --hero-paper-sunk: var(--paper-sunk, #f1f1f1);
+    --hero-island: var(--island, #127a3a);
+    --hero-island-bg: var(--island-bg, #e6f4ea);
+    --hero-rule: var(--rule, #e0e0e0);
 
     /*
      * Hover and pressed fills, mixed toward ink. `--ink` is near-black in light
@@ -292,12 +292,13 @@ const installLink = `${PLUGIN_REPO_URL}#install`
 
     /*
      * Paper, not a literal white. The accent lightens in dark mode, so white
-     * label text would drop to about 2.5:1 there; inverting to the paper token
-     * measures 7.01:1 in light and 8.54:1 in dark.
+     * label text would drop to 1.93:1 there; inverting to the paper token
+     * measures 5.28:1 in light and 9.59:1 in dark.
      */
     color: var(--hero-paper);
     display: inline-block;
-    font-size: 0.9375rem;
+    font-family: var(--font-family-mono, ui-monospace, monospace);
+    font-size: 0.875rem;
     font-weight: 600;
     padding: 0.6875rem 1.25rem;
     text-decoration: none;
@@ -385,13 +386,18 @@ const installLink = `${PLUGIN_REPO_URL}#install`
   }
 
   .home-hero .home-hero__specimen-label {
-    background: var(--hero-paper-sunk);
+    /* `background-color`, not the shorthand: the shorthand would reset the
+       terminal dots `[data-ui="terminal-bar"]` paints as background images. */
+    background-color: var(--hero-paper-sunk);
     border-bottom: 1px solid var(--hero-rule);
     color: var(--hero-ink-soft);
     font-family: var(--font-family-mono, ui-monospace, monospace);
     font-size: 0.65625rem;
     letter-spacing: 0.12em;
-    padding: 0.625rem 1rem;
+
+    /* The 3.5rem inline start clears the terminal dots. Restated here because
+       this rule outranks `[data-ui="terminal-bar"]` on specificity. */
+    padding: 0.625rem 1rem 0.625rem 3.5rem;
     text-transform: uppercase;
   }
 
