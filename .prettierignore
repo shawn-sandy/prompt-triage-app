@@ -6,6 +6,9 @@ playwright-report/
 test-results/
 *.min.js
 *.min.css
+# Compiled by `npm run sass:build` as one compressed line. Formatting it detaches it from
+# index.css.map, whose mappings describe that single line. Stylelint ignores it too.
+src/styles/index.css
 package-lock.json
 yarn.lock
 pnpm-lock.yaml

@@ -142,15 +142,39 @@ li {
   font-family: var(--font-family-sans);
 }
 
-// Type role three: mono. Code semantics get it by element; everything else
-// opts in through `[data-ui]`, so an eyebrow or a label is a deliberate
-// choice at the call site instead of a selector guess about class names.
+// Type role three: mono. Code and controls get it by element (`code`, `kbd`,
+// `samp`, `button`); annotations opt in through `[data-ui]`, so an eyebrow or
+// a label is a deliberate choice at the call site instead of a selector guess
+// about class names.
 code,
 kbd,
 samp,
 [data-ui="eyebrow"],
-[data-ui="label"] {
+[data-ui="label"],
+button {
   font-family: var(--font-family-mono);
+}
+
+// The logo's chevron, as a shell prompt in front of every eyebrow. The empty
+// alt text after the slash keeps screen readers from announcing "greater
+// than"; browsers without the alt syntax drop that declaration and show none.
+[data-ui="eyebrow"]::before {
+  content: "> " / "";
+}
+
+// Terminal chrome: three neutral dots painted as background layers, so they
+// add no element and no text. Neutral, never the accent -- the dots are
+// decoration (The Hydration Rule). Code blocks in posts are not opted in:
+// Expressive Code already frames shell snippets as terminal windows.
+[data-ui="terminal-bar"] {
+  --terminal-dot: color-mix(in srgb, var(--ink-soft) 45%, transparent);
+
+  background-image:
+    radial-gradient(circle at 1rem 50%, var(--terminal-dot) 0.25rem, transparent 0.3rem),
+    radial-gradient(circle at 1.75rem 50%, var(--terminal-dot) 0.25rem, transparent 0.3rem),
+    radial-gradient(circle at 2.5rem 50%, var(--terminal-dot) 0.25rem, transparent 0.3rem);
+  background-repeat: no-repeat;
+  padding-inline-start: 3.5rem;
 }
 
 [data-ui="eyebrow"],
@@ -182,7 +206,7 @@ h2 a[href] {
 }
 
 pre {
-  border-radius: 0.5rem;
+  border-radius: var(--card-radius);
   padding: 1rem;
 }
 
@@ -274,7 +298,7 @@ article th {
 article blockquote {
   background-color: var(--paper-sunk);
   border: var(--border-width-1) solid var(--rule);
-  border-radius: var(--radius-lg);
+  border-radius: var(--card-radius);
   color: var(--ink-soft);
   margin-inline: 0;
   padding: var(--space-3) var(--space-4);
@@ -296,6 +320,26 @@ article pre {
   border-radius: 0;
   overflow-x: auto;
   padding: var(--space-4);
+}
+
+// Shell snippets render in Expressive Code's terminal frame. Outside Starlight
+// its title-bar colours resolve to empty theme variables, so the bar and its
+// three dots painted transparent. Direction tokens give the panel a frame, a
+// Sunk Paper title bar and neutral dots, flipping with the theme. The `pre`
+// inside keeps its squared corners (The Squared-Insert Rule).
+article .expressive-code .frame.is-terminal {
+  border: var(--border-width-1) solid var(--rule);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+article .expressive-code .frame.is-terminal > .header {
+  background-color: var(--paper-sunk);
+  border-block-end: var(--border-width-1) solid var(--rule);
+}
+
+article .expressive-code .frame.is-terminal > .header::before {
+  background-color: var(--ink-soft);
 }
 
 article pre code {

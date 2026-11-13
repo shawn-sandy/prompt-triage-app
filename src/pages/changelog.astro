@@ -1,0 +1,291 @@
+---
+/**
+ * Changelog for the prompt-triage plugin.
+ *
+ * Static and prerendered: the release history is data in
+ * `src/data/plugin-changelog.ts`, so this page has nothing to fetch and no
+ * client script. Each release is a section with its own anchor, and a jump
+ * list at the top links to them.
+ */
+export const prerender = true
+import Layout from '#layouts/Layout.astro'
+import {
+  CHANGE_GROUPS,
+  UNRELEASED,
+  pluginChangelog,
+  refLabel,
+  refUrl,
+  releaseUrl,
+} from '#/data/plugin-changelog'
+import { PLUGIN_REPO_URL } from '#utils/site-config'
+
+const pageTitle = 'Changelog'
+
+/** `0.7.5` becomes `v0-7-5`, so the id has no dot to confuse a CSS selector. */
+const anchor = (version: string): string =>
+  version === UNRELEASED ? 'unreleased' : `v${version.replaceAll('.', '-')}`
+
+/**
+ * Splits text on backticks so `code` spans render as <code>. Odd-numbered
+ * pieces sit between a pair of backticks. Done here, not with set:html, so the
+ * entry text is never parsed as markup.
+ */
+const pieces = (text: string): { text: string; code: boolean }[] =>
+  text.split('`').map((piece, index) => ({ text: piece, code: index % 2 === 1 }))
+
+const latest = pluginChangelog.find(release => release.version !== UNRELEASED)
+
+/**
+ * Splits the versions into rows for the jump list: `Unreleased` on its own,
+ * then one row per minor line (`0.7.5` through `0.7.0` share the `0.7` row).
+ * The data is already newest first, so releases of a line are neighbours and a
+ * new row starts whenever the line changes.
+ */
+const jumpRows: string[][] = []
+let currentLine: string | undefined
+for (const { version } of pluginChangelog) {
+  const line = version === UNRELEASED ? UNRELEASED : version.split('.').slice(0, 2).join('.')
+  if (line !== currentLine) {
+    jumpRows.push([])
+    currentLine = line
+  }
+  jumpRows.at(-1)!.push(version)
+}
+
+/** Name read out for a row: the minor line, or `Unreleased`. */
+const rowLabel = (versions: string[]): string =>
+  versions[0] === UNRELEASED
+    ? UNRELEASED
+    : `${versions[0].split('.').slice(0, 2).join('.')} releases`
+---
+
+<Layout
+  pageTitle={pageTitle}
+  pageDescription="Every change to the prompt-triage Claude Code plugin, release by release, from 0.1.0 on."
+>
+  <p>
+    Every change to the prompt-triage plugin, release by release, newest first. It is written from
+    the commit history of the <a href={PLUGIN_REPO_URL}>plugin repository</a>, and each change links
+    to the pull request that made it. The latest release is{' '}
+    {latest && <a href={`#${anchor(latest.version)}`}>{latest.version}</a>}.
+  </p>
+
+  {/* role="list" keeps the list semantics in Safari, which drops them when list-style is none. */}
+  <nav class="changelog-jump" aria-label="Jump to a release">
+    <ul role="list" style={`--jump-rows: ${Math.ceil(jumpRows.length / 2)}`}>
+      {
+        jumpRows.map(versions => (
+          <li>
+            <ul role="list" aria-label={rowLabel(versions)}>
+              {versions.map(version => (
+                <li>
+                  <a href={`#${anchor(version)}`}>{version}</a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    pluginChangelog.map(release => (
+      <section class="changelog-release" id={anchor(release.version)}>
+        <h2>
+          {release.version}
+          {release.date && <time datetime={release.date}>{release.date}</time>}
+          {release.tagged && (
+            <a class="changelog-release__link" href={releaseUrl(release.version)}>
+              Release on GitHub
+            </a>
+          )}
+        </h2>
+        {release.version === UNRELEASED && (
+          <p>On the main branch, not yet in a numbered release.</p>
+        )}
+        {CHANGE_GROUPS.map(group => {
+          const changes = release.changes.filter(change => change.group === group)
+          return (
+            changes.length > 0 && (
+              <>
+                <h3>{group}</h3>
+                <ul>
+                  {changes.map(change => (
+                    <li>
+                      {pieces(change.text).map(piece =>
+                        piece.code ? <code>{piece.text}</code> : piece.text
+                      )}{' '}
+                      <a href={refUrl(change.ref)}>{refLabel(change.ref)}</a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )
+          )
+        })}
+      </section>
+    ))
+  }
+</Layout>
+
+<style>
+  /*
+   * The jump list is a ledger: one row per minor line, ruled off by hairlines.
+   * Every version sits in an equal-width cell, so the columns line up down the
+   * page and the eye can run along a line (0.7.5 to 0.7.0) or down the lines.
+   * A row that is wider than the screen wraps inside its own band, so the
+   * hairlines still show which versions belong together, and nothing can widen
+   * the page at 320px.
+   */
+  .changelog-jump {
+    border-block-end: 1px solid var(--rule, #e0e0e0);
+    margin-block-end: var(--space-8, 2rem);
+
+    /* The vendor stylesheet lays out every `nav > ul` as a horizontal flex row
+       and pads every `nav li` by 1rem. These are the hooks it reads: stack the
+       rows and take the padding off, so each row is a ledger line and the cells
+       are exactly as wide as set below. */
+    --nav-direction: column;
+    --nav-align: stretch;
+    --nav-padding-inline: 0;
+
+    /* Lets the rule below ask how wide this column is, not how wide the
+       screen is: the article sits beside a sidebar, so the two differ. */
+    container-type: inline-size;
+  }
+
+  /* Wide enough for two columns of rows (a six-cell row needs 24rem), the
+     list flows down the first column and then the second, newest first, and
+     is half as tall. The row count comes from the markup, so a new minor line
+     does not add a third column. */
+  @container (min-width: 52rem) {
+    .changelog-jump > ul {
+      column-gap: var(--space-8, 2rem);
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(var(--jump-rows), auto);
+    }
+  }
+
+  .changelog-jump ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .changelog-jump > ul > li {
+    border-block-start: 1px solid var(--rule, #e0e0e0);
+
+    /* Block, not the vendor's flex, so a row is one band as wide as the list. */
+    display: block;
+    padding-block: var(--space-1, 0.25rem);
+  }
+
+  .changelog-jump > ul > li > ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .changelog-jump a {
+    align-items: center;
+    border-radius: var(--radius, 0.25rem);
+
+    /* The accent, set outright: these are links, so they may carry it, and
+       naming the token keeps the dark-mode tint instead of a fixed green. */
+    color: var(--island, #127a3a);
+    display: inline-flex;
+
+    /* Versions are data, so they take mono. Tabular figures keep every cell
+       the same width whatever digits it holds. */
+    font-family: var(--font-family-mono, ui-monospace, monospace);
+    font-size: var(--font-size-sm, 0.875rem);
+    font-variant-numeric: tabular-nums;
+
+    /* 28px tall meets the 24px floor of WCAG 2.2 SC 2.5.8 with room to spare.
+       Touch screens get the 44px the rest of the site holds controls to. */
+    min-block-size: 1.75rem;
+    min-inline-size: 4rem;
+    padding-inline: var(--space-2, 0.5rem);
+    text-decoration: none;
+    transition: background-color var(--transition-duration-150, 150ms) ease-out;
+  }
+
+  /* Hover is a tint and an underline, so the state never rests on hue alone.
+     The focus ring is the system's: 2px of the accent, offset by 2px. */
+  .changelog-jump a:hover {
+    background: var(--island-bg, #e6f4ea);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .changelog-jump a:focus-visible {
+    outline: 2px solid var(--island, #127a3a);
+    outline-offset: 2px;
+  }
+
+  /* A 44px cell is the row's whole height, so the rows lose their own padding.
+     Cells also trim their side padding so a six-cell row (0.7.5 to 0.7.0) still
+     fits one line on a 375px phone instead of wrapping. */
+  @media (pointer: coarse) {
+    .changelog-jump > ul > li {
+      padding-block: 0;
+    }
+
+    .changelog-jump a {
+      min-block-size: 2.75rem;
+      min-inline-size: 2.75rem;
+      padding-inline: var(--space-1, 0.25rem);
+    }
+  }
+
+  .changelog-release {
+    border-block-start: 1px solid var(--rule, #e0e0e0);
+    margin-block-start: var(--space-8, 2rem);
+    padding-block-start: var(--space-4, 1rem);
+    /* Lands the heading below the top of the window when a jump link is used. */
+    scroll-margin-block-start: var(--space-4, 1rem);
+  }
+
+  .changelog-release h2 {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2, 0.5rem) var(--space-4, 1rem);
+    margin-block: 0 var(--space-3, 0.75rem);
+  }
+
+  /* The date and the release link are secondary to the version number. */
+  .changelog-release h2 time,
+  .changelog-release h2 .changelog-release__link {
+    font-family: var(--font-family-mono, ui-monospace, monospace);
+    font-size: var(--font-size-sm, 0.875rem);
+    font-weight: 400;
+
+    /* Headings on this site capitalise every word; "Release on GitHub" should
+       not read "Release On GitHub". */
+    text-transform: none;
+  }
+
+  /* The date is plain text, so it stays in the soft ink. The link keeps the
+     accent: it is the one thing in the heading a visitor can operate. */
+  .changelog-release h2 time {
+    color: var(--ink-soft, #5d5d5d);
+  }
+
+  .changelog-release h3 {
+    font-size: var(--font-size-lg, 1.125rem);
+    margin-block: var(--space-4, 1rem) var(--space-2, 0.5rem);
+  }
+
+  .changelog-release ul {
+    margin-block: 0;
+  }
+
+  .changelog-release li + li {
+    margin-block-start: var(--space-2, 0.5rem);
+  }
+</style>

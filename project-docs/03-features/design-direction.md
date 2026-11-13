@@ -31,23 +31,24 @@ Source of truth: `src/styles/_design-tokens.scss` (definitions) and `src/styles/
 
 | Token          | Light     | Dark      | Role                                                           |
 | -------------- | --------- | --------- | -------------------------------------------------------------- |
-| `--ink`        | `#101418` | `#e8eaed` | Primary text; the default `color` on `body`                    |
-| `--ink-soft`   | `#5a6472` | `#99a2ad` | Secondary text: decks, eyebrows, labels, captions, inline code |
-| `--paper`      | `#fcfcfd` | `#0d1014` | Page background                                                |
-| `--paper-sunk` | `#f1f3f5` | `#151a20` | Recessed surfaces: the header band, card backgrounds           |
-| `--island`     | `#0b6070` | `#6bb9c9` | The accent. Interactive only                                   |
-| `--island-bg`  | `#e6f2f6` | `#102a33` | Accent wash behind interactive affordances and `::selection`   |
-| `--rule`       | `#dde1e6` | `#262c33` | Hairlines and dividers                                         |
+| `--ink`        | `#131313` | `#ececec` | Primary text; the default `color` on `body`                    |
+| `--ink-soft`   | `#5d5d5d` | `#a3a3a3` | Secondary text: decks, eyebrows, labels, captions, inline code |
+| `--paper`      | `#fcfcfc` | `#131313` | Page background                                                |
+| `--paper-sunk` | `#f1f1f1` | `#1c1c1c` | Recessed surfaces: the header band, card backgrounds           |
+| `--island`     | `#127a3a` | `#3fd46c` | The accent. Interactive only                                   |
+| `--island-bg`  | `#e6f4ea` | `#10291a` | Accent wash behind interactive affordances and `::selection`   |
+| `--rule`       | `#e0e0e0` | `#2c2c2c` | Hairlines and dividers                                         |
 
-The accent is a deep petrol — a low-chroma blue-green, deliberately not Tailwind sky-500 and not the violet/indigo
-family that generated palettes converge on, so the palette does not read as a framework default. Low chroma is the
-point: the accent sits beside ink as a second voice rather than shouting over it, and it darkens cleanly under the
-`color-mix` hover states instead of going muddy. Every pair clears WCAG 2.1 AA. Measured against the running page
-rather than estimated: in light, ink on paper is 18.04:1, ink-soft on paper 5.85:1, island on paper 7.01:1, and the
-lowest pair of all — ink-soft on paper-sunk — 5.39:1; in dark, island on paper is 8.54:1 and the lowest pair — again
-ink-soft on paper-sunk — is 6.77:1. `e2e/home-accessibility.spec.ts` asserts the 4.5:1 AA floor against the tokens the
-page actually resolves, so no repoint can drop a pair below AA without failing the build. The exact figures above are
-not themselves asserted — they record the current budget, and re-measuring is part of changing a token.
+The palette is read off the Prompt Triage logo. Ink is the logo's `#131313` stroke, and the dark page is the logo's own
+`#131313` tile. The accent is the logo's green arc, Prompt Green. The raw `#28d05a` measures 2.04:1 on white, so light
+mode uses a darker shade of the same hue and dark mode a bright tint. The logo's red arc stays in the logo, because on a
+page it would read as an error. Every pair clears WCAG 2.1 AA. Measured with
+`.claude/skills/customize-design/scripts/contrast.mjs` rather than estimated: in light, ink on paper is 18.11:1,
+ink-soft on paper 6.41:1, island on paper 5.28:1, and the lowest pair of all — island on island-bg — 4.77:1; in dark,
+island on paper is 9.59:1 and the lowest pair — ink-soft on paper-sunk — is 6.75:1.
+`e2e/home-accessibility.spec.ts` asserts the 4.5:1 AA floor against the tokens the page actually resolves, so no
+repoint can drop a pair below AA without failing the build. The exact figures above are not themselves asserted — they
+record the current budget, and re-measuring is part of changing a token.
 
 Both themes are defined as SCSS mixins - `direction-light` and `direction-dark` - and applied through three scopes:
 
@@ -115,11 +116,11 @@ converging.
 One typeface used to render across every heading, paragraph, link and button, so elements differed only by size. Three
 roles is the smallest set that reads as deliberate.
 
-| Role        | Token                   | Applies to                                                        | Treatment                                  |
-| ----------- | ----------------------- | ----------------------------------------------------------------- | ------------------------------------------ |
-| **Display** | `--font-family-display` | `h1` through `h6`                                                 | Inter 600, negative tracking               |
-| **Body**    | `--font-family-sans`    | `body`, `p`, `li`, and everything inheriting from `body`          | System sans stack                          |
-| **Mono**    | `--font-family-mono`    | `code`, `kbd`, `samp`, `[data-ui="eyebrow"]`, `[data-ui="label"]` | Uppercase, `0.12em` tracking, `--ink-soft` |
+| Role        | Token                   | Applies to                                                                                                 | Treatment                                                                            |
+| ----------- | ----------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **Display** | `--font-family-display` | `h1` through `h6`                                                                                          | Inter 600, negative tracking                                                         |
+| **Body**    | `--font-family-sans`    | `body`, `p`, `li`, and everything inheriting from `body`                                                   | System sans stack                                                                    |
+| **Mono**    | `--font-family-mono`    | `code`, `kbd`, `samp`, `button`, hero buttons, nav panel links, `[data-ui="eyebrow"]`, `[data-ui="label"]` | Labels: uppercase, `0.12em` tracking, `--ink-soft`; eyebrows start with a `>` prompt |
 
 Details worth knowing:
 
@@ -133,9 +134,9 @@ Details worth knowing:
   than to a serif.
 - **Body is declared on `body`, not `html`.** @fpkit/acss sets `font-family` on `html`, which is why one face used to
   render everywhere. Declaring the body role on `body` beats that by inheritance and leaves the headings free.
-- **Mono is opt-in for non-code.** Code semantics get it by element. Everything else opts in through
-  `data-ui="eyebrow"` or `data-ui="label"`, so an eyebrow is a deliberate choice at the call site rather than a
-  selector guessing at class names.
+- **Mono is opt-in for annotations.** Code and controls get it by element (`code`, `kbd`, `samp`, `button`, plus
+  the links in the navigation panel). Annotations opt in through `data-ui="eyebrow"` or `data-ui="label"`, so an
+  eyebrow is a deliberate choice at the call site rather than a selector guessing at class names.
 
 Use `data-ui="eyebrow"` for the small uppercase line above a headline and `data-ui="label"` for figure and specimen
 labels. Both resolve to the mono family, `--ink-soft`, `0.75rem`, `0.12em` tracking, uppercase.

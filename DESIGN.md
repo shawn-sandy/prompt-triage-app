@@ -1,14 +1,14 @@
 ---
-name: Astro Kit
-description: Ink on paper with a single lit indicator — a component kit whose accent colour is a machine-checked signal, not decoration.
+name: Prompt Triage
+description: The logo's ink and green on a terminal-quiet ground — a code-forward kit whose single accent is a machine-checked signal, not decoration.
 colors:
-  ink: '#101418'
-  ink-soft: '#5a6472'
-  paper: '#fcfcfd'
-  paper-sunk: '#f1f3f5'
-  island: '#0b6070'
-  island-bg: '#e6f2f6'
-  rule: '#dde1e6'
+  ink: '#131313'
+  ink-soft: '#5d5d5d'
+  paper: '#fcfcfc'
+  paper-sunk: '#f1f1f1'
+  island: '#127a3a'
+  island-bg: '#e6f4ea'
+  rule: '#e0e0e0'
   success: '#22c55e'
   warning: '#f59e0b'
   error: '#ef4444'
@@ -44,8 +44,8 @@ typography:
     fontWeight: 400
     letterSpacing: '0.12em'
   button:
-    fontFamily: 'ui-sans-serif, system-ui, -apple-system, sans-serif'
-    fontSize: '0.9375rem'
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
+    fontSize: '0.875rem'
     fontWeight: 600
 rounded:
   none: '0'
@@ -67,17 +67,17 @@ components:
   button-primary:
     backgroundColor: '{colors.island}'
     textColor: '{colors.paper}'
-    rounded: '{rounded.lg}'
+    rounded: '{rounded.base}'
     padding: '11px 20px'
     typography: '{typography.button}'
     height: '44px'
   button-primary-hover:
-    backgroundColor: '#0a5766'
+    backgroundColor: '#186c36'
     textColor: '{colors.paper}'
   button-ghost:
     backgroundColor: 'transparent'
     textColor: '{colors.island}'
-    rounded: '{rounded.lg}'
+    rounded: '{rounded.base}'
     padding: '11px 20px'
     typography: '{typography.button}'
     height: '44px'
@@ -87,7 +87,7 @@ components:
   card:
     backgroundColor: '{colors.paper-sunk}'
     textColor: '{colors.ink}'
-    rounded: '{rounded.lg}'
+    rounded: '{rounded.base}'
     padding: '24px'
   code-block:
     backgroundColor: '{colors.paper-sunk}'
@@ -102,7 +102,7 @@ components:
   nav-toggle:
     backgroundColor: 'transparent'
     textColor: '{colors.ink}'
-    rounded: '{rounded.lg}'
+    rounded: '{rounded.base}'
     height: '44px'
     width: '44px'
   eyebrow:
@@ -110,13 +110,17 @@ components:
     typography: '{typography.label}'
 ---
 
-# Design System: Astro Kit
+# Design System: Prompt Triage
 
 ## Overview
 
 **Creative North Star: "The Instrument Reading"**
 
-Astro Kit looks like the face of a measuring instrument. The ground is neutral and quiet, the
+Prompt Triage looks like the face of a measuring instrument, read in a terminal. Its colours come
+off the logo — the `#131313` ink stroke, its dark tile, and the green arc — and its annotations
+speak in mono, the way a coding agent's output does: eyebrows open on the logo's `>` chevron as a
+shell prompt, buttons and navigation are set in mono, and the specimen sits in a terminal window.
+The ground is neutral and quiet, the
 scale is precise and legible at a glance, and exactly one thing on the dial is lit. Nothing is
 decorated for its own sake; every mark on the surface is there because it reports something. The
 palette's own token names say it out loud — `ink`, `paper`, `island` — and the accent behaves like
@@ -149,30 +153,31 @@ neither.
 
 ## Colors
 
-A near-monochrome ink-and-paper ground carrying exactly one chromatic voice, a low-chroma
-blue-green that darkens cleanly rather than going muddy.
+A neutral ink-and-paper ground read off the logo, carrying exactly one chromatic voice: the
+logo's green arc. The logo's red arc stays in the logo — on a page it would read as an error.
 
 ### Primary
 
-- **Harbour Teal** (`#0b6070` light / `#6bb9c9` dark): The single accent. It appears on links,
-  buttons, focus rings, and the interactive-specimen badge — and nowhere else. Low chroma is the
-  point: it sits beside ink as a considered second voice rather than shouting over it, and it
-  survives `color-mix` darkening for hover states without turning grey. Measures 7.01:1 on paper in
-  light and 8.54:1 in dark.
-- **Harbour Wash** (`#e6f2f6` light / `#102a33` dark): The accent's tinted background. Backs
-  interactive affordances on hover, and paints `::selection`.
+- **Prompt Green** (`#127a3a` light / `#3fd46c` dark): The single accent. It appears on links,
+  buttons, focus rings, and the interactive-specimen badge — and nowhere else. The logo's raw
+  `#28d05a` measures 2.04:1 on white, so light mode uses a darker shade of the same hue and dark
+  mode a bright tint. Measures 5.28:1 on paper in light and 9.59:1 in dark.
+- **Green Wash** (`#e6f4ea` light / `#10291a` dark): The accent's tinted background. Backs
+  interactive affordances on hover, and paints `::selection`. Prompt Green on Green Wash is the
+  lowest pair in light: 4.77:1.
 
 ### Neutral
 
-- **Ink** (`#101418` light / `#e8eaed` dark): Primary text and the default `color` on `body`.
-  18.04:1 on paper.
-- **Soft Ink** (`#5a6472` light / `#99a2ad` dark): Secondary text — decks, eyebrows, labels,
-  captions, inline code. 5.85:1 on paper.
-- **Paper** (`#fcfcfd` light / `#0d1014` dark): The page background.
-- **Sunk Paper** (`#f1f3f5` light / `#151a20` dark): Recessed surfaces — the header band, card
-  backgrounds, code blocks. Soft Ink on Sunk Paper is the lowest pair in the whole system: 5.39:1
-  light, 6.77:1 dark.
-- **Rule** (`#dde1e6` light / `#262c33` dark): Hairlines and dividers. Never text.
+- **Ink** (`#131313` light / `#ececec` dark): The logo's stroke colour. Primary text and the
+  default `color` on `body`. 18.11:1 on paper.
+- **Soft Ink** (`#5d5d5d` light / `#a3a3a3` dark): Secondary text — decks, eyebrows, labels,
+  captions, inline code. 6.41:1 on paper.
+- **Paper** (`#fcfcfc` light / `#131313` dark): The page background. In dark it is the logo's own
+  tile.
+- **Sunk Paper** (`#f1f1f1` light / `#1c1c1c` dark): Recessed surfaces — the header band, card
+  backgrounds, code blocks, terminal title bars. Soft Ink on Sunk Paper is the lowest pair in dark:
+  6.75:1 (5.82:1 light).
+- **Rule** (`#e0e0e0` light / `#2c2c2c` dark): Hairlines and dividers. Never text.
 
 ### Tertiary
 
@@ -220,14 +225,17 @@ them.
   the viewport grows rather than converging.
 - **Body** (400, 1rem, 1.5): Prose and lists, capped at 60ch — 80ch inside `article`.
 - **Label** (400, 0.75rem, `0.12em`, uppercase, Soft Ink): Eyebrows, figure captions, specimen
-  badges, inline code. Opted into with `data-ui="eyebrow"` or `data-ui="label"`.
-- **Button** (600, 0.9375rem): Interactive control labels. On the body sans, not the display face
-  and not the mono label role — a button is neither a title nor an annotation.
+  badges, inline code. Opted into with `data-ui="eyebrow"` or `data-ui="label"`. Eyebrows open on a
+  `>` prompt, the logo's chevron, hidden from screen readers.
+- **Button** (600, 0.875rem): The homepage hero's calls to action. Every plain `<button>` and
+  every link in the navigation panel also takes the mono family, so controls read like commands,
+  but keeps its own size and weight (@fpkit/acss's `--btn-fs` and `--btn-fw` for buttons). This
+  widens the mono role; it adds no fourth family.
 
 ### Named Rules
 
 **The Three Roles Rule.** Display for `h1`–`h6`, body sans for everything that reads, mono for
-everything that annotates. There is no fourth role. A new face is a new decision about the whole
+everything that annotates or operates. There is no fourth role. A new face is a new decision about the whole
 system, not a local one.
 
 **The One Weight Rule.** The self-hosted display face ships exactly one weight (600) as a single
@@ -293,15 +301,16 @@ needs to read as separate while sitting still, step its tone or draw a hairline.
 
 ## Shapes
 
-Softly rounded, never pill-shaped, and never sharp except on purpose. The system default is 8px
-(`--radius`, matching `--radius-lg`) and it covers buttons, cards, the specimen frame, and the
-navigation toggle. Smaller controls that sit inside a form — text inputs, selects — use 4px
-(`--radius-base`) so they read as fields rather than as buttons. Images take 16px
+Terminal-sharp, never pill-shaped. The system default is 4px (`--radius`, `--btn-radius` and
+`--card-radius`, all pointed at `--radius-base`) and it covers buttons, cards, the specimen frame,
+terminal frames, blockquotes, and the navigation toggle and panel. The scale itself is unchanged,
+so `--radius-lg` is still 8px for the dashboard panels that read it directly. Form fields take
+the same 4px through `--input-radius`. Images take 16px
 (`--img-radius`, `--radius-2xl`), the one place the geometry is allowed to soften noticeably.
 Fully-round (`--radius-full`) is reserved for avatars and status dots.
 
 Borders are always exactly 1px in Rule; there is no 2px border anywhere in the resting system. The
-only 2px stroke in the language is the focus ring, which is a 2px Harbour Teal outline offset by
+only 2px stroke in the language is the focus ring, which is a 2px Prompt Green outline offset by
 2px — deliberately the heaviest line the system draws, because it is the one a keyboard user needs
 to find.
 
@@ -316,25 +325,25 @@ as a mistake.
 
 ### Buttons
 
-- **Shape:** Softly rounded (8px), 1px border, 44px minimum height.
-- **Primary:** Harbour Teal fill with a matching border, label in Paper — not white. The accent
-  lightens in dark mode, so white label text would fall to roughly 2.5:1 there; inverting to Paper
-  measures 7.01:1 light and 8.54:1 dark. Padding `0.6875rem 1.25rem`, weight 600, 0.9375rem.
-- **Ghost / Secondary:** Transparent fill, label in Harbour Teal, border in neutral Rule. The
+- **Shape:** Terminal-sharp (4px), 1px border, 44px minimum height.
+- **Primary:** Prompt Green fill with a matching border, label in Paper — not white. The accent
+  lightens in dark mode, so white label text would fall to 1.93:1 there; inverting to Paper
+  measures 5.28:1 light and 9.59:1 dark. Padding `0.6875rem 1.25rem`, mono, weight 600, 0.875rem.
+- **Ghost / Secondary:** Transparent fill, label in Prompt Green, border in neutral Rule. The
   neutral border is what creates the hierarchy — an accent border here made the two buttons read as
   two equal calls to action.
 - **Hover:** Fill mixes 12% toward ink in OKLCH (`color-mix(in oklch, …)`), and the label picks up
   an underline at 3px offset so the state never relies on hue alone. The ghost variant gains its
-  Harbour Wash tint and trades its neutral border for the accent — hover is where it earns the
+  Green Wash tint and trades its neutral border for the accent — hover is where it earns the
   border its resting state gave up.
 - **Active:** Fill mixes 22% toward ink.
-- **Focus:** 2px Harbour Teal outline, 2px offset.
+- **Focus:** 2px Prompt Green outline, 2px offset.
 - **Transition:** Colour only, 150ms `ease-out`. Nothing moves, so there is nothing to suppress
   under `prefers-reduced-motion`.
 
 ### Cards
 
-- **Corner Style:** Softly rounded (8px).
+- **Corner Style:** Terminal-sharp (4px).
 - **Background:** Sunk Paper, painted through `body [data-card]` so it flips with the theme.
 - **Border:** 1px Rule.
 - **Shadow Strategy:** None at rest — see Elevation & Depth.
@@ -345,7 +354,7 @@ as a mistake.
 ### Inputs / Fields
 
 - **Style:** 4px radius, 1px border, Paper fill.
-- **Focus:** The system focus ring — 2px Harbour Teal outline, 2px offset.
+- **Focus:** The system focus ring — 2px Prompt Green outline, 2px offset.
 - **Validation:** Deferred until blur (`:user-invalid:not(:focus)`), so a field never turns red
   while it is still being typed into. Invalid fields take an Error outline and a `⚠` prefixed
   message; valid fields take a Success outline and drop their hint. Required fields append a
@@ -366,8 +375,9 @@ as a mistake.
 ### The Specimen (signature component)
 
 The system's signature pattern, and the clearest expression of the North Star: a rendered component
-and the source that produced it, shown as one object. A framed panel carries a small mono-capital
-"Rendered" badge on a Sunk Paper strip, the live component in a padded body, and a full-width code
+and the source that produced it, shown as one object. A framed panel carries a terminal title bar —
+three neutral dots and a small mono-capital badge on a Sunk Paper strip, opted into with
+`data-ui="terminal-bar"` — the live component in a padded body, and a full-width code
 block below a hairline with squared corners and its own horizontal scroll.
 
 The rule that makes it worth having: **the rendered instance and the printed snippet are built from
@@ -378,7 +388,7 @@ in the homepage hero and in the promoted tier of `FeatureCards`.
 
 ### Do:
 
-- **Do** reserve Harbour Teal for things a visitor can operate — links, buttons, focus rings,
+- **Do** reserve Prompt Green for things a visitor can operate — links, buttons, focus rings,
   specimen badges. Run the homepage e2e spec before assuming an exception is safe.
 - **Do** use the seven direction tokens (`--ink`, `--ink-soft`, `--paper`, `--paper-sunk`,
   `--island`, `--island-bg`, `--rule`) for every new surface.
