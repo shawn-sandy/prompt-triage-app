@@ -54,11 +54,12 @@ const {
 } = Astro.props as Props
 
 // An illustration of the dialog described in the README, not a screenshot: a
-// complex prompt on sonnet, where opus is suggested and the effort floor is high.
-// The dialog opens with the one-line restatement the rating call returns.
+// complex prompt on sonnet, where opus is suggested. The dialog opens with the
+// one-line restatement the rating call returns. It does not mention the effort
+// floor (the README: no model's default effort is below it).
 const specimenTitle = 'Rated complex'
 const specimenBody =
-  'Read as: add a retry limit to the upload client. You are on sonnet. Switch to opus, keep sonnet, or refine the prompt first. Whichever model you pick, effort is raised to at least high.'
+  'Read as: add a retry limit to the upload client. You are on sonnet. Switch to opus, keep sonnet, or refine the prompt first.'
 
 // The overview article, and the destination for both the secondary CTA and the
 // specimen card. Not `/docs`: that route calls `getEntry('docs', '0-welcome')`

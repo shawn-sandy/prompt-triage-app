@@ -19,6 +19,8 @@ For any prompt, at any point in the session:
 
 It asks the same questions, shows the issues and puts the rewrite in the prompt box. Nothing is sent until you press Enter. Versions up to 0.3.3 called this command `/improve`; that name no longer runs.
 
+Choosing **Refine prompt** in the dialog logs nothing while the review succeeds; the rewrite is logged when you send it, so one prompt counts once. If the review fails, the original prompt is sent and that session is logged as **Refine prompt**.
+
 ## The refine band
 
 In the terminal and the desktop app, a band above the prompt input offers the review while you type, for any prompt in the session:
@@ -44,9 +46,9 @@ Each picker adds one instruction to the review. Each one's default adds none, so
 | Scope    | Minimal              | Limits the change to what was asked: no extra files, abstractions or refactors.                                             |
 | Scope    | Ambitious            | Asks for the fuller version you want, and which extras, rather than inventing them.                                         |
 
-Your picks are saved in the plugin's store and come back next session. **Refine prompt** in the model dialog and `/refine-prompt` use the same picks.
+Your picks are saved in the plugin's store and come back next session. **Refine prompt** in the model dialog and `/refine-prompt` use the same picks, with one difference: for a `complex` or `long-running` prompt, the dialog's **Refine prompt** uses **Add a check** while Goal is Auto. The guide's order for a hard task is a check first, then more effort, then a bigger model, so a strong rating asks for the check before anything pricier. A Goal you set to Off or Add a check is used as set, and `/refine-prompt` and the band's **Refine** always use Goal as set.
 
-Press **Refine** (`r` once the band has focus, or a click) to review the draft. It asks the same questions as **Refine prompt**, then puts the rewrite in the prompt box, and the band shows the number of issues, **Show issues**, **Restore original** (puts back the draft you had) and **Done**. If you keep typing or send a prompt during the review, the prompt box is left alone and a toast asks you to press **Refine** again. If the review fails, a toast says so and the draft is unchanged.
+Press **Refine** (`r` once the band has focus, from `ctrl+x tab` or a click) to review the draft. It asks the same questions as **Refine prompt**, then puts the rewrite in the prompt box, and the band shows the number of issues, **Show issues**, **Restore original** (puts back the draft you had) and **Done**. With **Plan first** it also notes that Shift+Tab cycles to plan mode. That row stays until you press **Restore original** or **Done**, or send a prompt. If you keep typing or send a prompt during the review, the prompt box is left alone and a toast asks you to press **Refine** again. If the review fails, a toast says so and the draft is unchanged. A refine from the band counts as refining the session's first prompt, so the model dialog does not offer **Refine prompt** again for it.
 
 ## Questions, answers and the path check
 
