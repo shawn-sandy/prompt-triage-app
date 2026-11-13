@@ -183,6 +183,7 @@ nav[data-site-nav]:has(> [popover]) {
   > [popover] a {
     border-radius: var(--radius-md);
     display: block;
+    font-family: var(--font-family-mono);
     padding: var(--space-2) var(--space-3);
     width: 100%;
   }

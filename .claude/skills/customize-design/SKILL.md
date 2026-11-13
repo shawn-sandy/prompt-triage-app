@@ -33,7 +33,7 @@ Leave these alone - they are not the palette:
   @fpkit/acss components. A sky blue reaching the screen is a regression, not a brand.
 - `design-tokens.css`, `design-tokens.json`, `_component-sample-tokens.scss`: extracted
   from a sample file. The site never loads them.
-- The fallbacks in `HomeHero.astro` (`var(--ink, #101418)` and one for each other
+- The fallbacks in `HomeHero.astro` (`var(--ink, #131313)` and one for each other
   direction token): they only apply when a token is missing.
 
 ## Rules to keep
@@ -165,22 +165,26 @@ family and from each other.
 
 Change the scale and the aliases follow:
 
-| Token           | Size | Painted on                                                                            |
-| --------------- | ---- | ------------------------------------------------------------------------------------- |
-| `--radius-lg`   | 8px  | cards and the navigation toggle and panel (through `--card-radius`), dashboard panels |
-| `--radius-md`   | 6px  | links in the navigation panel, dashboard quick-action buttons                         |
-| `--radius-base` | 4px  | form inputs (through `--input-radius`)                                                |
-| `--radius-2xl`  | 16px | images (through `--img-radius`)                                                       |
+| Token           | Size | Painted on                                                                                                                                                                                                                                |
+| --------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--radius-lg`   | 8px  | dashboard panels                                                                                                                                                                                                                          |
+| `--radius-md`   | 6px  | links in the navigation panel, dashboard quick-action buttons                                                                                                                                                                             |
+| `--radius-base` | 4px  | cards, bare `pre`, blockquotes and the navigation toggle and panel (through `--card-radius`); the hero buttons and specimen (through `--radius`); every plain `<button>` (through `--btn-radius`); form inputs (through `--input-radius`) |
+| `--radius-2xl`  | 16px | images (through `--img-radius`)                                                                                                                                                                                                           |
 
-Some corners do not read the scale. Tie them in by adding these to the `:root` block of
-`_design-tokens.scss`. Radius does not change between themes, so `:root` is enough.
+Three aliases in the `:root` block of `_design-tokens.scss` carry the painted corners, all
+pointed at `--radius-base` today. Radius does not change between themes, so `:root` is
+enough. To move a group of corners, repoint its alias. Never add a second declaration of
+the same alias: the later one silently wins.
 
-- **The homepage hero's buttons and code specimen** read `--radius`, which @fpkit/acss
-  sets to 0.5rem and the site never sets. Add `--radius: var(--radius-lg);`.
-- **Every plain `<button>`** reads `--btn-radius`, with a 0.375rem fallback in
-  @fpkit/acss. Add `--btn-radius: var(--radius-lg);`.
-- **`pre` (0.5rem) and `article img` (0.3rem)** are hard-coded in `src/styles/_base.scss`.
-  Point them at a token only if the user wants those corners to change too.
+- **`--radius`:** the homepage hero's buttons and code specimen. @fpkit/acss defaults it
+  to 0.5rem.
+- **`--btn-radius`:** every plain `<button>`, with a 0.375rem fallback in @fpkit/acss.
+- **`--card-radius`:** cards, blockquotes, the navigation toggle and panel, and a bare
+  `pre`. `article pre` and the hero install command stay square at 0 on purpose (the
+  Squared-Insert Rule), so repointing the alias leaves them alone.
+- **`article img` (0.3rem)** is still hard-coded in `src/styles/_base.scss`. Point it at a
+  token only if the user wants that corner to change too.
 
 `--button-radius` is declared but nothing reads it, so changing it does nothing.
 
@@ -213,15 +217,15 @@ warning, error, info) alone. They signal state, not brand.
 - **Frontmatter:** `name`, `description`, the seven `colors` (light values), each
   `typography.*.fontFamily`, `rounded`, and any component value that hardcodes a colour
   (`button-primary-hover.backgroundColor`).
-- **`## Colors`:** new names for the colours (Harbour Teal and Harbour Wash are the
-  current ones), how the accent is described ("low-chroma blue-green"), light and dark
+- **`## Colors`:** new names for the colours (Prompt Green and Green Wash are the
+  current ones), how the accent is described ("the logo's green arc"), light and dark
   hex, and the script's ratios.
 - **`## Typography`** if the display font changed, **`## Shapes`** if the corners did.
 - **Every other hex, ratio and colour word.** Ratios also appear outside `## Colors`, for
   example under `### Buttons`. List them all and decide each one:
 
   ```bash
-  grep -nE '#[0-9a-fA-F]{6}\b|[0-9]+\.[0-9]+:1|Harbour|petrol|blue-green|teal' DESIGN.md
+  grep -nE '#[0-9a-fA-F]{6}\b|[0-9]+\.[0-9]+:1|Prompt Green|Green Wash|green arc' DESIGN.md
   grep -nw Inter DESIGN.md
   ```
 
@@ -283,9 +287,9 @@ drifted CSS, because it needs no Sass build.
 3. **Point the component's colours at the brand.** The attribute and the sheet only
    declare the new properties; nothing paints with them until a component reads them.
    Components read the direction tokens through their own aliases. `HomeHero.astro`, for
-   example, sets `--hero-ink: var(--ink, #101418)` and paints with `--hero-ink`. Repoint
+   example, sets `--hero-ink: var(--ink, #131313)` and paints with `--hero-ink`. Repoint
    each alias in an opted-in component by wrapping it, so the kit token and the alias's
-   own literal fallback both survive: `--hero-ink: var(--acme-ink, var(--ink, #101418));`.
+   own literal fallback both survive: `--hero-ink: var(--acme-ink, var(--ink, #131313));`.
    The component then still renders without the attribute, and before the tokens load. A
    component with no aliases needs its painted properties (`color`, `background`,
    `border-color`) pointed at the brand properties directly. Then confirm in the browser

@@ -21,36 +21,36 @@
 // focus rings, the interactive-specimen badge). Never reach for `--island`
 // for a decorative border, a heading or a card surface: an e2e test asserts
 // that no non-interactive element computes to the accent.
-// The accent is a deep petrol -- a low-chroma blue-green, deliberately neither
-// the violet/indigo every generated palette reaches for nor stock Tailwind
-// sky-500. Low chroma is the point: it sits next to ink as a considered second
-// voice rather than shouting over it, and it darkens cleanly under the
-// `color-mix` hover states instead of going muddy.
-// Contrast, measured not estimated -- light: ink/paper 18.04:1,
-// ink-soft/paper 5.85:1, island/paper 7.01:1, ink-soft/paper-sunk 5.39:1
-// (the lowest pair). Dark: island/paper 8.54:1, ink-soft/paper-sunk 6.77:1
-// (the lowest pair).
+// The palette is read off the Prompt Triage logo. Ink is the logo's #131313
+// stroke, and the dark page is the logo's own #131313 tile. The accent is the
+// logo's green arc: the raw #28d05a measures 2.04:1 on white, so light mode
+// uses a darker shade of the same hue and dark mode a bright tint. The red arc
+// stays in the logo; on a page it would read as an error.
+// Contrast, measured not estimated (customize-design/scripts/contrast.mjs) --
+// light: ink/paper 18.11:1, ink-soft/paper 6.41:1, island/paper 5.28:1,
+// island/island-bg 4.77:1 (the lowest pair). Dark: ink/paper 15.72:1,
+// island/paper 9.59:1, ink-soft/paper-sunk 6.75:1 (the lowest pair).
 @mixin direction-light {
-  --ink: #101418;
-  --ink-soft: #5a6472;
-  --island: #0b6070;
-  --island-bg: #e6f2f6;
-  --paper: #fcfcfd;
-  --paper-sunk: #f1f3f5;
-  --rule: #dde1e6;
+  --ink: #131313;
+  --ink-soft: #5d5d5d;
+  --island: #127a3a;
+  --island-bg: #e6f4ea;
+  --paper: #fcfcfc;
+  --paper-sunk: #f1f1f1;
+  --rule: #e0e0e0;
 
   // Lets the UA paint native controls, scrollbars and form widgets to match.
   color-scheme: light;
 }
 
 @mixin direction-dark {
-  --ink: #e8eaed;
-  --ink-soft: #99a2ad;
-  --island: #6bb9c9;
-  --island-bg: #102a33;
-  --paper: #0d1014;
-  --paper-sunk: #151a20;
-  --rule: #262c33;
+  --ink: #ececec;
+  --ink-soft: #a3a3a3;
+  --island: #3fd46c;
+  --island-bg: #10291a;
+  --paper: #131313;
+  --paper-sunk: #1c1c1c;
+  --rule: #2c2c2c;
 
   color-scheme: dark;
 }
@@ -247,6 +247,13 @@
   --radius-3xl: 1.5rem; // 24px
   --radius-full: 9999px; // Fully rounded
 
+  // Terminal-sharp corners. The scale above keeps its sizes; these aliases
+  // point the painted corners at 4px. `--radius` is read by the hero's buttons
+  // and specimen and `--btn-radius` by every plain <button>; @fpkit/acss
+  // defaults them to 0.5rem and 0.375rem, which the site never overrode.
+  --radius: var(--radius-base);
+  --btn-radius: var(--radius-base);
+
   // Border Width Tokens
   --border-width-0: 0;
   --border-width-1: 1px;
@@ -328,7 +335,7 @@
   // none, which is why every card inherited the vendor's white.
   --card-background: var(--paper-sunk);
   --card-border: var(--color-neutral-200);
-  --card-radius: var(--radius-lg);
+  --card-radius: var(--radius-base);
   --card-shadow: var(--shadow-base);
   --card-gap: var(--space-4);
   --card-padding: var(--space-6);

@@ -40,10 +40,10 @@ test.describe('Home Page Accessibility', () => {
    * documented values sit well above it, so a drop to AA-failing means a token
    * changed without the budget being rechecked.
    *
-   * Measured on the running page after the accent moved from violet to petrol
-   * -- light: ink/paper 18.04, ink-soft/paper 5.85, island/paper 7.01,
-   * ink/paper-sunk 16.63, ink-soft/paper-sunk 5.39; dark: 15.82, 7.38, 8.54,
-   * 14.51, 6.77. The gate stays at the falsifiable standard (4.5) rather than
+   * Measured with `.claude/skills/customize-design/scripts/contrast.mjs` after
+   * the accent moved from petrol to the logo's green -- light: ink/paper 18.11,
+   * ink-soft/paper 6.41, island/paper 5.28, ink/paper-sunk 16.44,
+   * ink-soft/paper-sunk 5.82; dark: 15.72, 7.36, 9.59, 14.42, 6.75. The gate stays at the falsifiable standard (4.5) rather than
    * at any of these figures, so repointing a token is not a test edit.
    */
   for (const colorScheme of ['light', 'dark'] as const) {
