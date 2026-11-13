@@ -66,7 +66,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Light on cost and data',
     description:
-      'One haiku request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. Refining from the first-prompt dialog also rates the rewrite again. A status row shows what the session has cost, and /triage-stats tallies every decision. Your band picks and that log are saved, never prompt text, and the plugin writes no files and makes no network requests of its own.',
+      'One haiku request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. Refining from the first-prompt dialog also rates the rewrite again when you send it. A status row shows what the session has cost, and /triage-stats tallies the newest 200 decisions. Your band picks and that log are saved, never prompt text, and the plugin writes no files and makes no network requests of its own.',
     link: '/content#cost-and-data',
     category: 'security',
     priority: 80,
