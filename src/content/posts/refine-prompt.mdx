@@ -23,10 +23,10 @@ Choosing **Refine prompt** in the dialog logs nothing while the review succeeds;
 
 ## The refine band
 
-In the terminal and the desktop app, a band above the prompt input offers the review while you type, for any prompt in the session:
+In the terminal and the desktop app, a band above the prompt input offers the review while you type, for any prompt in the session. Its controls sit in one bordered **Triage** section, above whatever else draws the band:
 
 ```text
-Refine  Goal: Auto  Workflow: As written  Scope: As written  Run in: This session   [r] Refine
+Triage  Goal: Auto  Workflow: As written  Scope: As written  Run in: This session  [r] Refine
 ```
 
 The band shows when the draft is not empty, is not a slash command, and is 40 characters or longer or has a line break. The plugin's `band` option in the config menu changes that rule: `always` drops the length rule, so it shows for any draft that is not empty or a slash command, and `never` hides it, though Run in still shows in the desktop app. **Run in** is drawn in the desktop app only, and asks Claude to run the prompt in a new session.
@@ -48,11 +48,11 @@ Each picker adds one instruction to the review. Each one's default adds none, so
 
 Your picks are saved in the plugin's store and come back next session. **Refine prompt** in the model dialog and `/refine-prompt` use the same picks, with one difference: for a `complex` or `long-running` prompt, the dialog's **Refine prompt** uses **Add a check** while Goal is Auto. The guide's order for a hard task is a check first, then more effort, then a bigger model, so a strong rating asks for the check before anything pricier. A Goal you set to Off or Add a check is used as set, and `/refine-prompt` and the band's **Refine** always use Goal as set.
 
-Press **Refine** (`r` once the band has focus, from `ctrl+x tab` or a click) to review the draft. It asks the same questions as **Refine prompt**, then puts the rewrite in the prompt box, and the band shows the number of issues, **Show issues**, **Restore original** (puts back the draft you had) and **Done**. With **Plan first** it also notes that Shift+Tab cycles to plan mode. That row stays until you press **Restore original** or **Done**, or send a prompt. If you keep typing or send a prompt during the review, the prompt box is left alone and a toast asks you to press **Refine** again. If the review fails, a toast says so and the draft is unchanged. A refine from the band counts as refining the session's first prompt, so the model dialog does not offer **Refine prompt** again for it.
+Press **Refine** (`r` once the band has focus, from `ctrl+x tab` or a click) to review the draft. It asks the same questions as **Refine prompt**, then puts the rewrite in the prompt box, and the band shows the number of issues, **Show issues**, **Restore original** (puts back the draft you had) and **Done**. With **Plan first** it also notes that Shift+Tab cycles to plan mode. That row stays until you press **Restore original** or **Done**, send a prompt, or run `/clear`. If you keep typing, send a prompt or run `/clear` during the review, the prompt box is left alone and a toast asks you to press **Refine** again. If the review fails, a toast says so and the draft is unchanged. A refine from the band counts as refining the session's first prompt, so the model dialog does not offer **Refine prompt** again for it.
 
 ## Questions, answers and the path check
 
-When the fix needs a fact only you know, such as which files are in scope, the review asks first: up to three questions, one dialog each, with likely answers to pick or your own under "Other". A second `haiku` call then rewrites the prompt with your answers and lists only the issues your answers left unfixed. Dismissing a question skips the rest, and the answers given so far are still used.
+When the fix needs a fact only you know, such as what counts as done or which of two designs you want, the review asks first: up to three questions, one dialog each, with likely answers to pick or your own under "Other". The review is told that the agent running the prompt can read the repo and run commands, and not to ask about, or list as an issue, anything that agent can find that way. That is an instruction to the model, not a check, so an occasional question can still get through. A second `haiku` call then rewrites the prompt with your answers and lists only the issues your answers left unfixed. Dismissing a question skips the rest, and the answers given so far are still used.
 
 Paths that the prompt or the rewrite names, such as `src/auth.ts`, are checked against the working directory, and any that are missing are listed, so a path the review made up is caught. The check is a heuristic. A name such as `node.js` can be reported as missing, and a folder named without `./`, such as `src/components`, is skipped.
 
