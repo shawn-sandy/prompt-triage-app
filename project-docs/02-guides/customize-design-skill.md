@@ -136,19 +136,20 @@ the rebrand:
 
 ### Corners
 
-| Token           | Size | Painted on                                                                                                                                                                                                                           |
-| --------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--radius-lg`   | 8px  | dashboard panels                                                                                                                                                                                                                     |
-| `--radius-md`   | 6px  | links in the navigation panel, dashboard quick-action buttons                                                                                                                                                                        |
-| `--radius-base` | 4px  | cards, `pre`, blockquotes and the navigation toggle and panel (through `--card-radius`); the hero buttons and specimen (through `--radius`); every plain `<button>` (through `--btn-radius`); form inputs (through `--input-radius`) |
-| `--radius-2xl`  | 16px | images (through `--img-radius`)                                                                                                                                                                                                      |
+| Token           | Size | Painted on                                                                                                                                                                                                                                |
+| --------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--radius-lg`   | 8px  | dashboard panels                                                                                                                                                                                                                          |
+| `--radius-md`   | 6px  | links in the navigation panel, dashboard quick-action buttons                                                                                                                                                                             |
+| `--radius-base` | 4px  | cards, bare `pre`, blockquotes and the navigation toggle and panel (through `--card-radius`); the hero buttons and specimen (through `--radius`); every plain `<button>` (through `--btn-radius`); form inputs (through `--input-radius`) |
+| `--radius-2xl`  | 16px | images (through `--img-radius`)                                                                                                                                                                                                           |
 
 Three aliases in the `:root` block of `_design-tokens.scss` carry the painted corners, all pointed at `--radius-base`
 today. Repoint an alias to move its corners; never add a second declaration, which would silently override the first:
 
 - `--radius` for the homepage hero's buttons and code specimen. @fpkit/acss defaults it to 0.5rem.
 - `--btn-radius` for every plain `<button>`, which otherwise falls back to 0.375rem.
-- `--card-radius` for cards, `pre`, blockquotes and the navigation toggle and panel.
+- `--card-radius` for cards, blockquotes, the navigation toggle and panel, and a bare `pre`. `article pre` and the
+  hero install command stay square at 0 on purpose (the Squared-Insert Rule), so repointing the alias leaves them alone.
 
 `article img` (0.3rem) is still hard-coded in `src/styles/_base.scss` and changes only on request.
 `--button-radius` is declared but has no reader.
