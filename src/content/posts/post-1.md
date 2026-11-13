@@ -32,8 +32,7 @@ or that contains a no-word such as "no" or "don't", switches nothing. Use `/mode
 ## One tier down, and how far up
 
 A `long-running` rating also offers **Switch to opus** under the `fable` suggestion, whenever opus is
-itself a step up from your current model. `fable` is the one suggestion two tiers above the next
-rating's, and the plugin's rating eval over-rates some `complex` prompts as `long-running`, so the tier
+itself a step up from your current model. `fable` is the priciest suggestion, and the plugin's rating eval over-rates some `complex` prompts as `long-running`, so the tier
 below is one click away rather than something to type under "Other". No other rating offers a step
 down. On Fable, Mythos or a model name the plugin does not recognize, such as `Default (recommended)`,
 neither step is offered.
@@ -75,7 +74,7 @@ session and leaves the pick armed for your next send.
 
 Dismissing the dialog, or a failed rating, sends the prompt as typed. A model switch lasts for the
 rest of the session and covers the main conversation only; subagents keep their own models, with one
-exception. After a switch up to `opus` or `fable`, the built-in Explore subagent runs on `haiku` when
+exception. While the model override is `opus` or `fable`, the built-in Explore subagent runs on `haiku` when
 the request that starts it names no model of its own. Exploration is read-only and cheap to check, and
 would otherwise run at the pricier model's rate. A resumed run, a teammate, a subagent of another type
 and an Explore agent that a plugin or you defined are left alone.

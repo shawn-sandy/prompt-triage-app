@@ -34,7 +34,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Rates your first prompt',
     description:
-      'One haiku call rates the first prompt of each session as simple, moderate, complex or long-running, then suggests haiku, sonnet, opus or fable. If that differs from your current model, a dialog lets you switch or keep it, says how many tiers up the suggestion is, and unless the prompt is simple restates what the prompt asks for so a misread shows early.',
+      'One haiku call rates the first prompt of each session as simple, moderate, complex or long-running, then suggests haiku, sonnet, opus or fable. If that differs from your current model, a dialog lets you switch or keep it, says how many tiers up the suggestion is when it is two or more, and unless the prompt is simple restates what the prompt asks for so a misread shows early.',
     link: '/posts/post-1',
     category: 'core',
     priority: 100,
