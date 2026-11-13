@@ -21,6 +21,9 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '#utils/site-config.js'
     <section class="home-features" aria-labelledby="home-features-title">
       <h2 class="home-section-title" id="home-features-title">What it does</h2>
       <FeatureCards promoted={2} />
+      <p class="home-changelog">
+        See what changed in each release in the <a href="/changelog">plugin changelog</a>.
+      </p>
     </section>
   </div>
   <section class="home-latest" aria-labelledby="home-latest-title">
@@ -52,6 +55,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '#utils/site-config.js'
   /* Margin, not padding, so the hairline stops at the content edge instead of
      running into the gutters. Same measure as the hero and FeatureCards. */
   .home-features .home-section-title {
+    margin-inline: max(1.25rem, calc((100% - var(--max-content-width, 80rem)) / 2));
+  }
+
+  /* Same gutter as the section heading, so the line sits under the features
+     instead of running into the viewport edge. */
+  .home-changelog {
+    margin-block: var(--space-6, 1.5rem) 0;
     margin-inline: max(1.25rem, calc((100% - var(--max-content-width, 80rem)) / 2));
   }
 

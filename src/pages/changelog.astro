@@ -1,0 +1,160 @@
+---
+/**
+ * Changelog for the prompt-triage plugin.
+ *
+ * Static and prerendered: the release history is data in
+ * `src/data/plugin-changelog.ts`, so this page has nothing to fetch and no
+ * client script. Each release is a section with its own anchor, and a jump
+ * list at the top links to them.
+ */
+export const prerender = true
+import Layout from '../layouts/Layout.astro'
+import {
+  CHANGE_GROUPS,
+  UNRELEASED,
+  pluginChangelog,
+  refLabel,
+  refUrl,
+  releaseUrl,
+} from '#/data/plugin-changelog'
+import { PLUGIN_REPO_URL } from '#utils/site-config'
+
+const pageTitle = 'Changelog'
+
+/** `0.7.5` becomes `v0-7-5`, so the id has no dot to confuse a CSS selector. */
+const anchor = (version: string): string =>
+  version === UNRELEASED ? 'unreleased' : `v${version.replaceAll('.', '-')}`
+
+/**
+ * Splits text on backticks so `code` spans render as <code>. Odd-numbered
+ * pieces sit between a pair of backticks. Done here, not with set:html, so the
+ * entry text is never parsed as markup.
+ */
+const pieces = (text: string): { text: string; code: boolean }[] =>
+  text.split('`').map((piece, index) => ({ text: piece, code: index % 2 === 1 }))
+
+const latest = pluginChangelog.find(release => release.version !== UNRELEASED)
+---
+
+<Layout
+  pageTitle={pageTitle}
+  pageDescription="Every change to the prompt-triage Claude Code plugin, release by release, from 0.1.0 on."
+>
+  <p>
+    Every change to the prompt-triage plugin, release by release, newest first. It is written from
+    the commit history of the <a href={PLUGIN_REPO_URL}>plugin repository</a>, and each change links
+    to the pull request that made it. The latest release is{' '}
+    {latest && <a href={`#${anchor(latest.version)}`}>{latest.version}</a>}.
+  </p>
+
+  <nav class="changelog-jump" aria-label="Jump to a release">
+    <ul>
+      {
+        pluginChangelog.map(release => (
+          <li>
+            <a href={`#${anchor(release.version)}`}>{release.version}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    pluginChangelog.map(release => (
+      <section class="changelog-release" id={anchor(release.version)}>
+        <h2>
+          {release.version}
+          {release.date && <time datetime={release.date}>{release.date}</time>}
+          {release.tagged && (
+            <a class="changelog-release__link" href={releaseUrl(release.version)}>
+              Release on GitHub
+            </a>
+          )}
+        </h2>
+        {release.version === UNRELEASED && (
+          <p>On the main branch, not yet in a numbered release.</p>
+        )}
+        {CHANGE_GROUPS.map(group => {
+          const changes = release.changes.filter(change => change.group === group)
+          return (
+            changes.length > 0 && (
+              <>
+                <h3>{group}</h3>
+                <ul>
+                  {changes.map(change => (
+                    <li>
+                      {pieces(change.text).map(piece =>
+                        piece.code ? <code>{piece.text}</code> : piece.text
+                      )}{' '}
+                      <a href={refUrl(change.ref)}>{refLabel(change.ref)}</a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )
+          )
+        })}
+      </section>
+    ))
+  }
+</Layout>
+
+<style>
+  /* One row of version links that wraps, so 22 releases never force a sideways
+     scroll at 320px. */
+  .changelog-jump ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2, 0.5rem) var(--space-4, 1rem);
+    list-style: none;
+    margin: 0 0 var(--space-8, 2rem);
+    padding: 0;
+  }
+
+  .changelog-release {
+    border-block-start: 1px solid var(--rule, #e0e0e0);
+    margin-block-start: var(--space-8, 2rem);
+    padding-block-start: var(--space-4, 1rem);
+    /* Lands the heading below the top of the window when a jump link is used. */
+    scroll-margin-block-start: var(--space-4, 1rem);
+  }
+
+  .changelog-release h2 {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2, 0.5rem) var(--space-4, 1rem);
+    margin-block: 0 var(--space-3, 0.75rem);
+  }
+
+  /* The date and the release link are secondary to the version number. */
+  .changelog-release h2 time,
+  .changelog-release h2 .changelog-release__link {
+    font-family: var(--font-family-mono, ui-monospace, monospace);
+    font-size: var(--font-size-sm, 0.875rem);
+    font-weight: 400;
+
+    /* Headings on this site capitalise every word; "Release on GitHub" should
+       not read "Release On GitHub". */
+    text-transform: none;
+  }
+
+  /* The date is plain text, so it stays in the soft ink. The link keeps the
+     accent: it is the one thing in the heading a visitor can operate. */
+  .changelog-release h2 time {
+    color: var(--ink-soft, #5d5d5d);
+  }
+
+  .changelog-release h3 {
+    font-size: var(--font-size-lg, 1.125rem);
+    margin-block: var(--space-4, 1rem) var(--space-2, 0.5rem);
+  }
+
+  .changelog-release ul {
+    margin-block: 0;
+  }
+
+  .changelog-release li + li {
+    margin-block-start: var(--space-2, 0.5rem);
+  }
+</style>
