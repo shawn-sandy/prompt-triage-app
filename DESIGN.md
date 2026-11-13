@@ -227,9 +227,10 @@ them.
 - **Label** (400, 0.75rem, `0.12em`, uppercase, Soft Ink): Eyebrows, figure captions, specimen
   badges, inline code. Opted into with `data-ui="eyebrow"` or `data-ui="label"`. Eyebrows open on a
   `>` prompt, the logo's chevron, hidden from screen readers.
-- **Button** (600, 0.875rem): Interactive control labels, and the links in the navigation panel.
-  On the mono face, so every control reads like a command. This widens the mono role; it adds no
-  fourth family.
+- **Button** (600, 0.875rem): The homepage hero's calls to action. Every plain `<button>` and
+  every link in the navigation panel also takes the mono family, so controls read like commands,
+  but keeps its own size and weight (@fpkit/acss's `--btn-fs` and `--btn-fw` for buttons). This
+  widens the mono role; it adds no fourth family.
 
 ### Named Rules
 

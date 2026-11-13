@@ -167,8 +167,9 @@ roles is the smallest set that reads as deliberate.
   than to a serif.
 - **Body is declared on `body`, not `html`.** @fpkit/acss sets `font-family` on `html`, which is why one face used to
   render everywhere. Declaring the body role on `body` beats that by inheritance and leaves the headings free.
-- **Mono is opt-in for anything that is not code.** Code semantics get it by element; everything else opts in through
-  a data attribute, so an eyebrow is a deliberate choice at the call site rather than a selector guessing at class names.
+- **Mono is opt-in for annotations.** Code and controls get it by element (`code`, `kbd`, `samp`, `button`, plus the
+  links in the navigation panel); annotations opt in through a data attribute, so an eyebrow is a deliberate choice at
+  the call site rather than a selector guessing at class names.
 
 The display face is self-hosted: a latin-subset, single-weight `inter-600.woff2` in `public/fonts/`, declared
 with `font-display: swap` and preloaded from `src/layouts/Base.astro`. No CDN and exactly one font request.

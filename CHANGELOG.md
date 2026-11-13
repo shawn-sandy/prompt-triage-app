@@ -164,6 +164,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Design system rebranded to the Prompt Triage logo, with code-forward styling**
+  (`src/styles/_design-tokens.scss`, `src/styles/_base.scss`, `src/components/astro/HomeHero.astro`,
+  `src/styles/starlight-custom.scss`, `DESIGN.md`)
+  - The palette is read off the logo: ink `#131313`, the dark page is the logo's `#131313` tile, and
+    the single accent is the logo's green arc (`#127a3a` light, `#3fd46c` dark; the raw `#28d05a`
+    measures 2.04:1 on white). All eight contrast pairs measure 4.5:1 or higher in both themes; the
+    lowest is island on island-bg in light, 4.77:1. The Starlight docs accent follows the same green
+  - Buttons and navigation panel links take the mono family; eyebrows open on a `>` prompt (the
+    logo's chevron, hidden from screen readers); the hero specimen gets a terminal title bar
+    (`data-ui="terminal-bar"`), and Expressive Code's terminal frames in posts get a visible title
+    bar, whose colours had resolved to empty variables outside Starlight
+  - Painted corners go from 8px to 4px through `--radius`, `--btn-radius` and `--card-radius`
+  - `DESIGN.md` is renamed from Astro Kit to Prompt Triage; its two published copies, `PRODUCT.md`'s
+    accent commitment and the customize-design skill and guides are updated to match
+
 - **Site copy promotes the prompt-triage Claude Code plugin** (`src/components/astro/HomeHero.astro`,
   `src/data/features.ts`, `src/utils/site-config.ts`): the hero, feature cards, navigation, footer,
   About, Contact, success, 404 and offline pages, page titles, the RSS feed and the content

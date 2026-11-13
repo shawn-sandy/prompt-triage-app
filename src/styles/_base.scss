@@ -142,9 +142,10 @@ li {
   font-family: var(--font-family-sans);
 }
 
-// Type role three: mono. Code semantics get it by element; everything else
-// opts in through `[data-ui]`, so an eyebrow or a label is a deliberate
-// choice at the call site instead of a selector guess about class names.
+// Type role three: mono. Code and controls get it by element (`code`, `kbd`,
+// `samp`, `button`); annotations opt in through `[data-ui]`, so an eyebrow or
+// a label is a deliberate choice at the call site instead of a selector guess
+// about class names.
 code,
 kbd,
 samp,

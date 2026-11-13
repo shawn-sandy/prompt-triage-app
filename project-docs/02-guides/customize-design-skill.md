@@ -64,7 +64,7 @@ The skill leaves these alone:
   reaching the screen is a regression, not a brand.
 - `design-tokens.css`, `design-tokens.json` and `_component-sample-tokens.scss`, which were extracted from a sample
   file. The site never loads them.
-- The literal fallbacks in `HomeHero.astro`, such as `var(--ink, #101418)`. They apply only when a token is missing.
+- The literal fallbacks in `HomeHero.astro`, such as `var(--ink, #131313)`. They apply only when a token is missing.
 - The status colours (success, warning, error, info). They signal state, not brand.
 
 ## Workflow
@@ -121,7 +121,7 @@ the rebrand:
    search is not exhaustive, so it reads the remaining values in `DESIGN.md` too:
 
    ```bash
-   grep -nE '#[0-9a-fA-F]{6}\b|[0-9]+\.[0-9]+:1|Harbour|petrol|blue-green|teal' DESIGN.md
+   grep -nE '#[0-9a-fA-F]{6}\b|[0-9]+\.[0-9]+:1|Prompt Green|Green Wash|green arc' DESIGN.md
    grep -nw Inter DESIGN.md
    ```
 
@@ -136,20 +136,21 @@ the rebrand:
 
 ### Corners
 
-| Token           | Size | Painted on                                                                            |
-| --------------- | ---- | ------------------------------------------------------------------------------------- |
-| `--radius-lg`   | 8px  | cards and the navigation toggle and panel (through `--card-radius`), dashboard panels |
-| `--radius-md`   | 6px  | links in the navigation panel, dashboard quick-action buttons                         |
-| `--radius-base` | 4px  | form inputs (through `--input-radius`)                                                |
-| `--radius-2xl`  | 16px | images (through `--img-radius`)                                                       |
+| Token           | Size | Painted on                                                                                                                                                                                                                           |
+| --------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--radius-lg`   | 8px  | dashboard panels                                                                                                                                                                                                                     |
+| `--radius-md`   | 6px  | links in the navigation panel, dashboard quick-action buttons                                                                                                                                                                        |
+| `--radius-base` | 4px  | cards, `pre`, blockquotes and the navigation toggle and panel (through `--card-radius`); the hero buttons and specimen (through `--radius`); every plain `<button>` (through `--btn-radius`); form inputs (through `--input-radius`) |
+| `--radius-2xl`  | 16px | images (through `--img-radius`)                                                                                                                                                                                                      |
 
-Corners that do not read the scale are tied in through the `:root` block of `_design-tokens.scss`:
+Three aliases in the `:root` block of `_design-tokens.scss` carry the painted corners, all pointed at `--radius-base`
+today. Repoint an alias to move its corners; never add a second declaration, which would silently override the first:
 
-- `--radius: var(--radius-lg);` for the homepage hero's buttons and code specimen. @fpkit/acss sets `--radius` to
-  0.5rem and the site never sets it.
-- `--btn-radius: var(--radius-lg);` for every plain `<button>`, which otherwise falls back to 0.375rem.
+- `--radius` for the homepage hero's buttons and code specimen. @fpkit/acss defaults it to 0.5rem.
+- `--btn-radius` for every plain `<button>`, which otherwise falls back to 0.375rem.
+- `--card-radius` for cards, `pre`, blockquotes and the navigation toggle and panel.
 
-`pre` (0.5rem) and `article img` (0.3rem) are hard-coded in `src/styles/_base.scss` and change only on request.
+`article img` (0.3rem) is still hard-coded in `src/styles/_base.scss` and changes only on request.
 `--button-radius` is declared but has no reader.
 
 ### Path B: a brand layer
@@ -181,7 +182,7 @@ Corners that do not read the scale are tied in through the `:root` block of `_de
 
 2. Each opted-in component sets `data-<brand>` on its root element and imports `#styles/<brand>-palette.css`.
 3. Each component alias is wrapped so the kit token and the literal fallback survive:
-   `--hero-ink: var(--acme-ink, var(--ink, #101418));`. A component with no aliases has its `color`, `background` and
+   `--hero-ink: var(--acme-ink, var(--ink, #131313));`. A component with no aliases has its `color`, `background` and
    `border-color` pointed at the brand properties directly.
 4. No brand colour may equal `--island` in either theme. The accent audit audits only the homepage, so a brand layer
    on another route is compared to `--island` by hand.

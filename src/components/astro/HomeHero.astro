@@ -456,9 +456,13 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     font-size: 0.75rem;
     font-weight: 600;
 
-    /* Wide enough for the longest label ("Copied"), so swapping labels never
-       resizes the button and reflows the wrapped command beside it. */
-    min-inline-size: 5.75em;
+    /* Wide enough for the longest label ("Copied", six characters), so swapping
+       labels never resizes the button and reflows the wrapped command beside
+       it. The label is mono, so every character is one `ch` wide: six
+       characters, the 0.75rem inline padding on each side and the two 1px
+       borders. `ch` measures the "0" glyph and real advances can round a
+       fraction of a pixel wider, so half a character of slack is added. */
+    min-inline-size: calc(6.5ch + 1.5rem + 2px);
     padding: 0.375rem 0.75rem;
     transition:
       background-color var(--transition-duration-150, 150ms) ease-out,

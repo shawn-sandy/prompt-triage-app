@@ -134,9 +134,9 @@ Details worth knowing:
   than to a serif.
 - **Body is declared on `body`, not `html`.** @fpkit/acss sets `font-family` on `html`, which is why one face used to
   render everywhere. Declaring the body role on `body` beats that by inheritance and leaves the headings free.
-- **Mono is opt-in for non-code.** Code semantics get it by element. Everything else opts in through
-  `data-ui="eyebrow"` or `data-ui="label"`, so an eyebrow is a deliberate choice at the call site rather than a
-  selector guessing at class names.
+- **Mono is opt-in for annotations.** Code and controls get it by element (`code`, `kbd`, `samp`, `button`, plus
+  the links in the navigation panel). Annotations opt in through `data-ui="eyebrow"` or `data-ui="label"`, so an
+  eyebrow is a deliberate choice at the call site rather than a selector guessing at class names.
 
 Use `data-ui="eyebrow"` for the small uppercase line above a headline and `data-ui="label"` for figure and specimen
 labels. Both resolve to the mono family, `--ink-soft`, `0.75rem`, `0.12em` tracking, uppercase.
