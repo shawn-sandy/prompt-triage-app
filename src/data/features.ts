@@ -34,7 +34,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Rates your first prompt',
     description:
-      'One haiku call rates the first prompt of each session as simple, moderate, complex or long-running, then suggests haiku, sonnet, opus or fable. If that differs from your current model, a dialog lets you switch or keep it, and unless the prompt is simple it restates what the prompt asks for so a misread shows early.',
+      'One haiku call rates the first prompt of each session as simple, moderate, complex or long-running, then suggests haiku, sonnet, opus or fable. If that differs from your current model, a dialog lets you switch or keep it, says how many tiers up the suggestion is when it is two or more, and unless the prompt is simple restates what the prompt asks for so a misread shows early.',
     link: '/posts/post-1',
     category: 'core',
     priority: 100,
@@ -50,7 +50,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Sets effort to match the task',
     description:
-      'Moderate prompts get an effort floor of medium; complex and long-running prompts get high. For a simple prompt you can keep your model and drop effort to low instead. Running /effort yourself ends either change.',
+      'Moderate, complex and long-running prompts get an effort floor of medium, which only acts if you had lowered effort by hand. For a simple prompt you can keep your model and drop effort to low instead. Running /effort yourself ends either change.',
     link: '/posts/post-2',
     category: 'core',
     priority: 90,
@@ -66,7 +66,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Light on cost and data',
     description:
-      'One haiku request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. Refining from the first-prompt dialog also rates the rewrite again. Only your band picks are saved; prompts are not, and the plugin writes no files and makes no network requests of its own.',
+      'One haiku request on the first prompt of each session. Each refine adds one haiku request, or two if you answer its questions. Refining from the first-prompt dialog also rates the rewrite again when you send it. A status row shows what the session has cost, and /triage-stats tallies the newest 200 decisions. Your band picks and that log are saved, never prompt text, and the plugin writes no files and makes no network requests of its own.',
     link: '/content#cost-and-data',
     category: 'security',
     priority: 80,
@@ -74,7 +74,7 @@ export const projectFeatures: FeatureCard[] = [
   {
     title: 'Runs where Claude Code runs',
     description:
-      'Loads in the terminal, the IDE extensions and the Code tab of the desktop app. Chat and Cowork do not load hooks. Nine hooks, MIT licensed, tests run with claude plugin test .',
+      'Loads in the terminal, the IDE extensions and the Code tab of the desktop app. Chat and Cowork do not load hooks. Fifteen hooks, MIT licensed, tests run with claude plugin test .',
     link: '/content#install',
     category: 'development',
     priority: 75,

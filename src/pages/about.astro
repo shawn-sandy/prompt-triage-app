@@ -7,8 +7,8 @@ const pageTitle = 'About'
 const facts = [
   'It runs in Claude Code: the terminal, the IDE extensions and the Code tab of the desktop app.',
   'It costs one haiku request on the first prompt of each session. Refining a prompt adds one haiku request (two if you answer its questions), and refining from the first-prompt dialog adds one more classification when you send the rewrite.',
-  'It does not store your prompts. The only thing it saves across sessions is your Goal, Workflow and Scope picks in the refine band. It writes no files and makes no network requests of its own.',
-  'All of its logic, nine hooks and one command, is in hooks/register.ts, with tests you run using claude plugin test .',
+  'It does not store your prompts. It saves two things across sessions: your Goal, Workflow and Scope picks in the refine band, and a log of up to 200 entries recording each rating, the models, the option you chose, the date, the session cost, turns, context and effort. /triage-stats reads that log. It writes no files and makes no network requests of its own.',
+  'All of its logic, fifteen hooks and two commands, is in hooks/register.ts, with tests you run using claude plugin test .',
   'It is released under the MIT License.',
 ]
 ---

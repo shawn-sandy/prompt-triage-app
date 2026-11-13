@@ -1,0 +1,62 @@
+---
+title: 'The status row, the decision log and /triage-stats'
+pubDate: 2026-11-12T09:00:00Z
+description: 'What the Session estimate row shows, what the decision log records about each rated session, and how /triage-stats tallies it.'
+author: 'Shawn Sandy'
+tags: ['claude-code', 'prompt-triage', 'cost']
+publish: true
+---
+
+prompt-triage keeps two records of what a session costs. The status row shows the live figures while you work. The decision log keeps one entry per rated session, so you can see afterwards whether a suggestion was ever taken and what the session cost.
+
+## The status row
+
+After the first prompt, the bottom row of the band above the prompt input shows a **Session estimate** at its right edge: what the session has cost, how many prompts it has had and how many tokens are in the context window, with a **Manage context** button.
+
+```text
+                    Session estimate: $0.42 · 3 prompts · 48.2K tokens   Manage context
+```
+
+The figures update whenever the engine reports that the cost or context moved, after each turn, and after `/clear` and a compaction. The row shows whatever the `band` setting is.
+
+Below 25% context, or before a fresh conversation's first response, the row draws no button, since nothing needs clearing. From 25% the button appears. Pressing it opens a dialog that offers both **Clear** and **Compact**, recommending **Clear** below 60% context and **Compact** from 60%. **Compact** keeps a summary to go on with the task, and **Clear** starts fresh for an unrelated one. The choice runs `/compact` or `/clear` once the session is idle. Closing the dialog runs nothing.
+
+## The decision log
+
+Each time the plugin rates a first prompt it appends one entry to a log in its store:
+
+- the rating,
+- the main-loop model before and after,
+- the option chosen, or `none asked` when no dialog was shown, `dismissed`, or **Open in a new session**,
+- a random `id`, which links to nothing outside the log, and the UTC date it was logged,
+- once the session has spent anything, its `cost` in US dollars, as `/cost` totals it, counted from after the decision was logged so the rating call itself is left out,
+- the `turns` the session has completed since the decision, the `ctx` percent of the context window in use at the end of the latest turn, and the `effort` level the latest main-loop request ran at.
+
+There is one exception. When you choose **Refine prompt** and the review succeeds, nothing is logged yet. The rewrite is rated and logged when you send it, so one prompt counts once, and a rewrite you never send leaves no entry. If the review fails, the original prompt is sent and the session is logged as **Refine prompt**.
+
+Free text typed under "Other" is recorded as `other`, plus the model alias it named if it named one, never the text itself. No prompt text is logged, and the log keeps the newest 200 entries. The figures are updated at the end of each main-loop turn; subagent turns do not write them. Each is left out when it cannot be read.
+
+## /triage-stats
+
+`/triage-stats` prints the log as tables and makes no model request. The first has one row per rating, with how many sessions it rated, how many of those changed model tier, and how many of those changes went up to a pricier tier or down to a cheaper one. When entries have the figures, it adds tables for:
+
+- the average cost of each rating and choice (switched model, low effort, kept the model, or handed off to a new session),
+- the average turns and context percent for each rating,
+- the average cost of each rating and effort level.
+
+An entry missing one figure is left out of that average only, and `/triage-stats` says under the tables that they show which choices went with cheaper, shorter or fuller sessions, not that a choice made them so.
+
+To compare sessions before and after a change, pass a date:
+
+```text
+/triage-stats since 2026-11-12
+```
+
+That counts only entries logged on that UTC date or later, and names the date in the first line. The date must be a real ISO date. Anything else, such as `9/22/2026`, `2026-13-01` or `yesterday`, prints a usage line and no table, since a misread date would print a confident, wrong comparison. Entries logged before dates were added are left out of a `since` tally.
+
+## Limits
+
+- A session's cost is everything the session spent after its decision was logged, including subagents and any other plugin's model calls, until the session ends or `/clear`, `/resume` or `/branch` runs.
+- The log is one list that every session appends to without a lock, since the store has no atomic update. Two sessions rating their first prompt within the same few milliseconds can lose one entry. The log is a tally, so a missing row costs nothing else.
+- An entry already pushed out by the 200-entry cap is not updated or added back.
+- `ctx` is the latest reading, not a peak, so a compaction late in a session lowers it.

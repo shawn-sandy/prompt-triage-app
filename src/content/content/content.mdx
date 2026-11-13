@@ -12,23 +12,25 @@ prompt-triage is a Claude Code plugin. It looks at the first prompt of each new 
 ## What happens on the first prompt
 
 1. On the first prompt of a session (not a slash command, not a resumed session), one `haiku` call at effort `low` rates the prompt `simple`, `moderate`, `complex` or `long-running`, against a rubric that defines each rating by the shape of the task.
-2. The rating suggests a model: `simple` to `haiku`, `moderate` to `sonnet`, `complex` to `opus`, `long-running` to `fable`. When the suggestion differs from the model you are on, a dialog asks whether to switch or keep your current model. Under "Other" you can type a model name, such as `use sonnet` or `use fable`.
+2. The rating suggests a model: `simple` to `haiku`, `moderate` to `sonnet`, `complex` to `opus`, `long-running` to `fable`. When the suggestion differs from the model you are on, a dialog asks whether to switch or keep your current model. Under "Other" you can type a model name, such as `use sonnet` or `use fable`. A `long-running` rating also offers **Switch to opus** under the `fable` suggestion, whenever opus is itself a step up from your current model. When the suggestion ranks two or more tiers above your current model, the question says so, for example `Opus is two tiers above your current model.` The tiers are haiku, sonnet, opus, then fable. The wording counts tiers and never names a price.
 3. For a `moderate`, `complex` or `long-running` prompt, the dialog opens with a one-line restatement of what the prompt asks for, such as `Read as: add a retry limit to the upload client`, so a misread shows before the work starts.
-4. For a `simple` prompt, the first option is **Keep model, effort low**: it keeps your model and runs the conversation at effort `low`. The switch to `haiku` is still offered after it.
+4. For a `simple` prompt, the first option is **Keep model, effort low**: it keeps your model and runs the conversation at effort `low`. The switch to `haiku` is offered after it, except when your model is two or more tiers above `haiku` (Opus, Fable or Mythos), where the switch is the far larger saving and so comes first.
 5. In the desktop app, a `complex` or `long-running` rating also offers **Open in a new session**.
 6. The dialog also offers **Refine prompt**, which reviews the prompt and puts an improved version in the prompt box.
-7. Each rating sets a minimum effort: none for `simple`, `medium` for `moderate`, `high` for `complex` and `long-running`.
+7. Each rating sets a minimum effort: none for `simple`, `medium` for `moderate`, `complex` and `long-running`.
+8. Every decision is written to a log in the plugin's store, with its date, what the session cost, how many turns it ran, how full its context got and the effort it ran at. `/triage-stats` prints the tally. See [the status row and the decision log](/posts/decision-log).
 
 When the suggestion matches your current model, nothing is asked, except that in the desktop app a `complex` or `long-running` prompt still offers the new session. Dismissing the dialog, or a failed rating (an error, a timeout after 10 seconds, or a reply that names no single rating), sends the prompt unchanged.
 
-A model switch applies to the main conversation for the rest of the session. Subagents keep their own models. The status line shows `running <name>, not <session model>` while it is in effect, and running `/model` yourself ends the override.
+A model switch applies to the main conversation for the rest of the session. Subagents keep their own models, with one exception: while the model override is `opus` or `fable`, the built-in Explore subagent runs on `haiku` when the request that starts it names no model of its own. Exploration is read-only and cheap to check, and would otherwise run at the pricier model's rate. A resumed run, a teammate, a subagent of another type and an Explore agent that a plugin or you defined are left alone. The status line shows `running <name>, not <session model>` while the override is in effect, followed by `, effort raised to <level>` or `, effort lowered to low` once the effort was changed. Running `/model` yourself ends the override.
 
 ## After the first prompt
 
-Two parts of the plugin work on any prompt in the session, not only the first:
+Three parts of the plugin work on any prompt in the session, not only the first:
 
 - **The refine band.** While you type a draft of 40 characters or more, or one with a line break, a band above the prompt input offers Goal, Workflow and Scope pickers and a **Refine** button. See [refining a prompt](/posts/refine-prompt#the-refine-band).
 - **Run in.** In the desktop app the band also has a **Run in** picker. Set it to **New session** and press Enter, and that prompt is sent with the new-session instruction instead of running here. The pick applies to one send, then reads **This session** again. A prompt typed while Claude is still working runs in this session and leaves the pick armed for your next send. The terminal draws no Run in picker.
+- **The status row.** After the first prompt, the bottom row of the band shows a **Session estimate**: what the session has cost, how many prompts it has had and how many tokens are in the context window. From 25% context a **Manage context** button appears, and pressing it offers **Clear** or **Compact**. See [the status row and the decision log](/posts/decision-log).
 
 ## Install
 
@@ -54,7 +56,7 @@ The plugin's `band` option in the config menu sets when the refine band shows: `
 
 The cost is one `haiku` request at effort `low`, with its reply capped at 256 tokens, on the first prompt of each session. The same request returns the rating and, for a `moderate`, `complex` or `long-running` prompt, the restatement, so the dialog never waits on a second call. A `simple` prompt gets the label only. Later prompts are not checked. Each **Refine prompt**, `/refine-prompt` or band **Refine** adds one `haiku` request, and a second when you answer its questions. The band makes no request while you type. Choosing **Refine prompt** in the dialog also means the rewrite is rated again when you send it, which is one more rating request.
 
-The text of your first prompt is sent to `haiku` to get the rating, once per session unless you refine it from the dialog. When you refine a prompt, it is also sent to `haiku` for the review. The plugin does not persist prompt data, the model override or the effort minimum; they are held in memory for the session. The band's Goal, Workflow and Scope picks, and nothing else, are saved in the plugin's store across sessions. It writes no files and makes no network requests of its own.
+The text of your first prompt is sent to `haiku` to get the rating, once per session unless you refine it from the dialog. When you refine a prompt, it is also sent to `haiku` for the review. The plugin does not persist prompt data, the model override or the effort minimum; they are held in memory for the session. Two things are saved in the plugin's store across sessions: the band's Goal, Workflow and Scope picks, and the decision log. The log keeps at most 200 entries, each holding the rating, the main-loop model before and after, the option chosen, a random id, the UTC date, the session's cost in US dollars, the turns since the decision, the context percent used and the effort level. No prompt text is logged. `/triage-stats` reads the log and makes no model request. The plugin writes no files and makes no network requests of its own.
 
 ## Limits worth knowing
 
@@ -62,6 +64,8 @@ The text of your first prompt is sent to `haiku` to get the rating, once per ses
 - The model override and the effort minimum live in the plugin's memory. If the plugin reloads, the session goes back to its own model and effort.
 - The effort minimum is set from the first prompt only. A different task later in the session does not change it.
 - A `complex` prompt on a model above opus, such as Fable or Mythos, is not offered a switch to opus, and a `long-running` prompt on Fable or Mythos is not offered a switch to fable.
+- The `long-running` step down to opus is skipped when opus is not a step up from your current model. A model name the plugin does not recognize, such as `Default (recommended)`, counts as strong enough for every rating, so it is never offered a step down.
+- A session's logged cost is everything the session spent after its decision was logged, including subagents. It shows which choices went with cheaper sessions, not that a choice made them so.
 - **Open in a new session** and **Run in** work by asking Claude to call `start_session`, so they depend on Claude following that instruction.
 
-The [README](https://github.com/shawn-sandy/prompt-triage#limits) lists the rest. For the details of each part, read the posts on [the first-prompt rating](/posts/post-1), [the effort floor](/posts/post-2), [refining a prompt](/posts/refine-prompt) and [the nine hooks](/posts/hooks).
+The [README](https://github.com/shawn-sandy/prompt-triage#limits) lists the rest. For the details of each part, read the posts on [the first-prompt rating](/posts/post-1), [the effort floor](/posts/post-2), [refining a prompt](/posts/refine-prompt), [the status row and the decision log](/posts/decision-log) and [the fifteen hooks](/posts/hooks).

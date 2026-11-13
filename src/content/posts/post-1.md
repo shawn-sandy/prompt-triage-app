@@ -29,6 +29,19 @@ Under "Other" you can type a model name. Free text switches the model only if it
 of `haiku`, `sonnet`, `opus` or `fable`, so `keep opus` switches to opus. Text that names two models,
 or that contains a no-word such as "no" or "don't", switches nothing. Use `/model` for those cases.
 
+## One tier down, and how far up
+
+A `long-running` rating also offers **Switch to opus** under the `fable` suggestion, whenever opus is
+itself a step up from your current model. `fable` is the priciest suggestion, and the plugin's rating eval over-rates some `complex` prompts as `long-running`, so the tier
+below is one click away rather than something to type under "Other". No other rating offers a step
+down. On Fable, Mythos or a model name the plugin does not recognize, such as `Default (recommended)`,
+neither step is offered.
+
+When the suggestion ranks two or more tiers above your current model, the question also says so, for
+example `Opus is two tiers above your current model.` The tiers are haiku, sonnet, opus, then fable
+(Mythos ranks with Fable). The wording is a count of tiers, never a price, since prices change and the
+plugin would then state a wrong number. A one-tier step gets no such sentence.
+
 ## Read as
 
 For a `moderate`, `complex` or `long-running` prompt, the dialog opens with a one-line restatement of
@@ -41,8 +54,9 @@ fix it. If the reply has no restatement, the dialog is shown without it.
 
 For a `simple` prompt, the dialog's first option is **Keep model, effort low**. It keeps your model
 and runs the main conversation at effort `low`, since lowering effort is often a better lever than
-switching models. The switch to `haiku` is still offered after it. See
-[the effort floor](/posts/post-2).
+switching models. The switch to `haiku` is offered after it, except when your model is two or more
+tiers above `haiku` (Opus, Fable or Mythos). There the switch is the far larger saving, so it comes
+first. See [the effort floor](/posts/post-2).
 
 ## Open in a new session
 
@@ -59,6 +73,15 @@ session and leaves the pick armed for your next send.
 ## What stays unchanged
 
 Dismissing the dialog, or a failed rating, sends the prompt as typed. A model switch lasts for the
-rest of the session and covers the main conversation only; subagents keep their own models. While it
-is in effect the status line shows `running <name>, not <session model>`. Running `/model` yourself
-ends the override.
+rest of the session and covers the main conversation only; subagents keep their own models, with one
+exception. While the model override is `opus` or `fable`, the built-in Explore subagent runs on `haiku` when
+the request that starts it names no model of its own. Exploration is read-only and cheap to check, and
+would otherwise run at the pricier model's rate. A resumed run, a teammate, a subagent of another type
+and an Explore agent that a plugin or you defined are left alone.
+
+While the override is in effect the status line shows `running <name>, not <session model>`. The model
+picker and `/model` still show the session's own setting, which is why the text names both. Running
+`/model` yourself ends the override, and the Explore routing with it.
+
+Every first-prompt decision is also written to a log you can tally with `/triage-stats`. See
+[the status row and the decision log](/posts/decision-log).
