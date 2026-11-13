@@ -176,6 +176,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (`data-ui="terminal-bar"`), and Expressive Code's terminal frames in posts get a visible title
     bar, whose colours had resolved to empty variables outside Starlight
   - Painted corners go from 8px to 4px through `--radius`, `--btn-radius` and `--card-radius`
+  - The browser `theme-color` (`src/layouts/Base.astro`) moves from the old slate `#1e293b` to the
+    logo's ink, `#131313`
   - `DESIGN.md` is renamed from Astro Kit to Prompt Triage; its two published copies, `PRODUCT.md`'s
     accent commitment and the customize-design skill and guides are updated to match
 
