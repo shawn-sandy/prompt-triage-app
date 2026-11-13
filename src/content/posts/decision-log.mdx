@@ -11,13 +11,15 @@ prompt-triage keeps two records of what a session costs. The status row shows th
 
 ## The status row
 
-After the first prompt, the bottom row of the band above the prompt input shows a **Session estimate** at its right edge: what the session has cost, how many prompts it has had and how many tokens are in the context window, with a **Manage context** button.
+After the first prompt, the bottom row of the band's **Triage** section shows a **Session estimate**: what the session has cost, how many prompts it has had, how many tokens are in the context window and what share of it they fill, with a **Manage context** button that the share decides.
 
 ```text
-                    Session estimate: $0.42 · 3 prompts · 48.2K tokens   Manage context
+Session estimate: $0.42 · 3 prompts · 52.6K tokens · 26% context   Manage context
 ```
 
 The figures update whenever the engine reports that the cost or context moved, after each turn, and after `/clear` and a compaction. The row shows whatever the `band` setting is.
+
+Only prompts you send count, from any surface. Slash commands such as `/compact` do not, nor do messages delivered to the session (a background task's notification, a scheduled prompt, another session's message). A compaction keeps the count, and `/clear` starts it over.
 
 Below 25% context, or before a fresh conversation's first response, the row draws no button, since nothing needs clearing. From 25% the button appears. Pressing it opens a dialog that offers both **Clear** and **Compact**, recommending **Clear** below 60% context and **Compact** from 60%. **Compact** keeps a summary to go on with the task, and **Clear** starts fresh for an unrelated one. The choice runs `/compact` or `/clear` once the session is idle. Closing the dialog runs nothing.
 
@@ -30,18 +32,18 @@ Each time the plugin rates a first prompt it appends one entry to a log in its s
 - the option chosen, or `none asked` when no dialog was shown, `dismissed`, or **Open in a new session**,
 - a random `id`, which links to nothing outside the log, and the UTC date it was logged,
 - once the session has spent anything, its `cost` in US dollars, as `/cost` totals it, counted from after the decision was logged so the rating call itself is left out,
-- the `turns` the session has completed since the decision, the `ctx` percent of the context window in use at the end of the latest turn, and the `effort` level the latest main-loop request ran at.
+- the `prompts` you have sent since the decision (slash commands do not count), the `ctx` percent of the context window in use at the end of the latest turn, and the `effort` level the latest main-loop request ran at.
 
 There is one exception. When you choose **Refine prompt** and the review succeeds, nothing is logged yet. The rewrite is rated and logged when you send it, so one prompt counts once, and a rewrite you never send leaves no entry. If the review fails, the original prompt is sent and the session is logged as **Refine prompt**.
 
-Free text typed under "Other" is recorded as `other`, plus the model alias it named if it named one, never the text itself. No prompt text is logged, and the log keeps the newest 200 entries. The figures are updated at the end of each main-loop turn; subagent turns do not write them. Each is left out when it cannot be read.
+Free text typed under "Other" is recorded as `other`, plus the model alias it named if it named one, never the text itself. No prompt text is logged, and the log keeps the newest 200 entries. The figures are updated at the end of each main-loop turn; subagent turns do not write them. Each is left out when it cannot be read. Entries logged by earlier versions hold `turns` instead, the transcript's user turns including slash commands. `/triage-stats` leaves those out of the prompts average, since the two count different things.
 
 ## /triage-stats
 
 `/triage-stats` prints the log as tables and makes no model request. The first has one row per rating, with how many sessions it rated, how many of those changed model tier, and how many of those changes went up to a pricier tier or down to a cheaper one. When entries have the figures, it adds tables for:
 
 - the average cost of each rating and choice (switched model, low effort, kept the model, or handed off to a new session),
-- the average turns and context percent for each rating,
+- the average prompts sent and context percent for each rating,
 - the average cost of each rating and effort level.
 
 An entry missing one figure is left out of that average only, and `/triage-stats` says under the tables that they show which choices went with cheaper, shorter or fuller sessions, not that a choice made them so.
