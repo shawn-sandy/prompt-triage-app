@@ -19,7 +19,7 @@ Session estimate: $0.42 · 3 prompts · 52.6K tokens · 26% context   Manage con
 
 The figures update whenever the engine reports that the cost or context moved, after each turn, and after `/clear` and a compaction. The row shows whatever the `band` setting is.
 
-Only prompts you send count, from any surface. Slash commands such as `/compact` do not, nor do messages delivered to the session (a background task's notification, a scheduled prompt, another session's message). A compaction keeps the count, and `/clear` starts it over.
+Only prompts you send count, from any surface. Slash commands such as `/compact` do not, nor do messages delivered to the session (a background task's notification, a scheduled prompt, another session's message). There is one exception. After `/resume` or `/branch`, and after a reload mid-conversation, the count is read from the transcript again. That transcript also holds the slash commands typed earlier in the conversation, so those can count until a `/clear`. A compaction keeps the count, and `/clear` starts it over.
 
 Below 25% context, or before a fresh conversation's first response, the row draws no button, since nothing needs clearing. From 25% the button appears. Pressing it opens a dialog that offers both **Clear** and **Compact**, recommending **Clear** below 60% context and **Compact** from 60%. **Compact** keeps a summary to go on with the task, and **Clear** starts fresh for an unrelated one. The choice runs `/compact` or `/clear` once the session is idle. Closing the dialog runs nothing.
 
