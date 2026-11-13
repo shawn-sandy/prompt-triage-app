@@ -32,6 +32,8 @@ Each time the plugin rates a first prompt it appends one entry to a log in its s
 - once the session has spent anything, its `cost` in US dollars, as `/cost` totals it, counted from after the decision was logged so the rating call itself is left out,
 - the `turns` the session has completed since the decision, the `ctx` percent of the context window in use at the end of the latest turn, and the `effort` level the latest main-loop request ran at.
 
+There is one exception. When you choose **Refine prompt** and the review succeeds, nothing is logged yet. The rewrite is rated and logged when you send it, so one prompt counts once, and a rewrite you never send leaves no entry. If the review fails, the original prompt is sent and the session is logged as **Refine prompt**.
+
 Free text typed under "Other" is recorded as `other`, plus the model alias it named if it named one, never the text itself. No prompt text is logged, and the log keeps the newest 200 entries. The figures are updated at the end of each main-loop turn; subagent turns do not write them. Each is left out when it cannot be read.
 
 ## /triage-stats
