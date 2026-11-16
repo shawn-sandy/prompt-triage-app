@@ -15,8 +15,10 @@ const parts = (version: string): number[] => version.split('.').map(Number)
 const numbered = pluginChangelog.filter(release => release.version !== UNRELEASED)
 
 describe('pluginChangelog', () => {
-  it('lists Unreleased first, then numbered versions newest first with no repeats', () => {
-    expect(pluginChangelog[0].version).toBe(UNRELEASED)
+  it('lists Unreleased first when there is one, then numbered versions newest first with no repeats', () => {
+    expect(
+      pluginChangelog.findIndex(release => release.version === UNRELEASED)
+    ).toBeLessThanOrEqual(0)
     for (let i = 1; i < numbered.length; i++) {
       const [newer, older] = [parts(numbered[i - 1].version), parts(numbered[i].version)]
       const order = newer[0] - older[0] || newer[1] - older[1] || newer[2] - older[2]

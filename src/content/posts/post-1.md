@@ -73,7 +73,9 @@ session and leaves the pick armed for your next send.
 ## What stays unchanged
 
 Dismissing the dialog, or a failed rating, sends the prompt as typed. A model switch lasts for the
-rest of the session and covers the main conversation only; subagents keep their own models, with one
+rest of the session. It covers the main conversation and Claude Code's background requests (compaction,
+`/recap` and prompt suggestions; see [background requests follow the switch](/posts/background-requests)),
+and a subagent on the session model's family moves with it. Subagents on any other model keep it, with one
 exception. While the model override is `opus` or `fable`, the built-in Explore subagent runs on `haiku` when
 the request that starts it names no model of its own. Exploration is read-only and cheap to check, and
 would otherwise run at the pricier model's rate. A resumed run, a teammate, a subagent of another type

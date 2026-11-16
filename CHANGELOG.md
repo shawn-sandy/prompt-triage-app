@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Plugin changelog page** (`src/pages/changelog.astro`, `src/data/plugin-changelog.ts`): `/changelog`
+  lists every prompt-triage release from 0.1.0, grouped as Added, Changed, Fixed and Docs, CI and
+  tooling, with each change linked to its pull request and each tagged version linked to its GitHub
+  release. The homepage links to it under the feature cards
+  - 0.7.6 is added to the data: background requests follow a model switch, the status row's
+    cutoffs are capped at 200,000 tokens, and a refine survives a delivery. `Unreleased` is gone
+    until a commit lands after the last version bump, so `tests/data/plugin-changelog.test.ts`
+    now accepts a list with no `Unreleased` entry
+
+- **Posts on 0.7.6**: `/posts/background-requests` (how a switch now moves compaction, `/recap` and
+  prompt suggestions, why it runs no `/model`, and its limits) and `/posts/release-0-7-6` (the
+  200,000-token cutoffs, the refine fix and the typecheck repair)
+
 - **Dashboard app shell** (`src/layouts/Dashboard.astro`, `src/components/dashboard/`): `/dashboard`,
   `/dashboard/users` and `/profile` now share a dashboard layout with its own sidebar in place of
   the site navigation and footer
@@ -164,6 +177,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Plugin copy brought up to date with prompt-triage 0.7.6** (`src/content/content/content.mdx`,
+  `src/content/posts/`, `src/data/features.ts`, `src/components/astro/HomeHero.astro`,
+  `src/pages/about.astro`): a model switch is described as covering the whole session, background
+  requests included, with its three limits; the status row's cutoffs are measured against at most
+  200,000 tokens; a delivery no longer ends a band refine; and the plugin has sixteen hooks, with a
+  new `http.fetch` row in the hooks table. The hero deck says the switch moves the whole session
+  - Checked against the plugin repository at `d6bbfef`. Its README still says fifteen hooks, but
+    `hooks/register.ts` registers sixteen with `on(...)`, and the site follows the source
+- **Plugin copy brought up to date with prompt-triage 0.7.5** (#19): the decision log counts prompts
+  in place of turns, the status row shows the context percent, the band's controls sit in a bordered
+  Triage section, `/clear` also ends the model override and effort minimum, and the refine example
+  question is one the reviewer still asks. `src/styles/index.css` is rebuilt from the SCSS sources,
+  with token values unchanged in both themes
 - **Design system rebranded to the Prompt Triage logo, with code-forward styling**
   (`src/styles/_design-tokens.scss`, `src/styles/_base.scss`, `src/components/astro/HomeHero.astro`,
   `src/styles/starlight-custom.scss`, `DESIGN.md`)
