@@ -65,7 +65,7 @@ The text of your first prompt is sent to `haiku` to get the rating, once per ses
 - The effort minimum is set from the first prompt only. A different task later in the session does not change it.
 - A `complex` prompt on a model above opus, such as Fable or Mythos, is not offered a switch to opus, and a `long-running` prompt on Fable or Mythos is not offered a switch to fable.
 - The `long-running` step down to opus is skipped when opus is not a step up from your current model. A model name the plugin does not recognize, such as `Default (recommended)`, counts as strong enough for every rating, so it is never offered a step down.
-- After a switch, `/cost` and the decision log still price a moved background request at the session model's rate, so they overstate a switched session's spend. A session that started on `haiku` and switches up leaves its haiku requests alone. Where your organization's guard mod loads, background requests stay on the session's model.
+- After a switch, `/cost` and the decision log still price a moved background request at the session model's rate, so they overstate the spend of a session switched to a cheaper model and understate that of one switched up. A session that started on `haiku` and switches up leaves its haiku requests alone. Where your organization's guard mod loads, background requests stay on the session's model.
 - A session's logged cost is everything the session spent after its decision was logged, including subagents. It shows which choices went with cheaper sessions, not that a choice made them so.
 - **Open in a new session** and **Run in** work by asking Claude to call `start_session`, so they depend on Claude following that instruction.
 

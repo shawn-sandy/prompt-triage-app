@@ -52,8 +52,9 @@ the model the session started with.
 
 ## What it does not fix
 
-- **`/cost` and the decision log overstate a switched session.** The engine prices a moved request at
-  the model it built it for, so both still count it at the session model's rate.
+- **`/cost` and the decision log misprice a switched session.** The engine prices a moved request at
+  the model it built it for, so both still count it at the session model's rate. After a switch to a
+  cheaper model that overstates the spend, and after a switch up, such as Sonnet to Opus, it understates it.
 - **A session that started on `haiku` and switches up leaves its haiku requests alone.** The engine runs
   its own small helper requests on haiku too, and the family cannot tell them from background ones. Those
   requests are the cheapest, so the switch up leaves them.
