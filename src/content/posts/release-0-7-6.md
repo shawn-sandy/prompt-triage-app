@@ -12,8 +12,8 @@ The release shipped four other changes, listed on the [changelog](/changelog#v0-
 
 ## The status row measures against 200,000 tokens at most
 
-The row's **Manage context** button appears from 25% context, and its dialog recommends **Compact** from
-60%. Those percents used to be taken of the whole window. The window is now 1M tokens, so 25% and 60%
+The row's **Manage context** button appears from 25% of the context window, and its dialog recommends
+**Compact** from 60%. Those percents used to be taken of the whole window. The window is now 1M tokens, so 25% and 60%
 would have meant 250,000 and 600,000 tokens, far past the point where re-reading the context on every
 turn costs the most.
 
