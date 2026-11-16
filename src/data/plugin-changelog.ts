@@ -1,6 +1,6 @@
 /**
  * Release history of the prompt-triage plugin, written from the commit history
- * of github.com/shawn-sandy/prompt-triage (HEAD 18dbffb, 2026-11-13).
+ * of github.com/shawn-sandy/prompt-triage (HEAD d6bbfef, 2026-11-16).
  *
  * Every commit is listed once, under the release that shipped it. Because the
  * history is linear, that is the first `chore: bump version to X` commit after
@@ -42,8 +42,50 @@ export const UNRELEASED = 'Unreleased'
 
 export const pluginChangelog: Release[] = [
   {
-    version: UNRELEASED,
+    version: '0.7.6',
+    date: '2026-11-16',
+    tagged: true,
     changes: [
+      {
+        group: 'Fixed',
+        text: 'After "Switch to X", Claude Code\'s background requests (compaction, `/recap` and prompt suggestions) now follow the switch. They used to stay on the session\'s original model and cache the whole conversation again at its price.',
+        ref: 69,
+      },
+      {
+        group: 'Fixed',
+        text: 'The mod moves a background request by rewriting the model it names just before it is sent, not by running `/model`, because a `/model` a plugin runs also saves that model as your default for new sessions. A rewritten request that is answered 400 is sent again as built.',
+        ref: 69,
+      },
+      {
+        group: 'Fixed',
+        text: "The picked model's id is learned once, from the first request that carries tools, so a later helper request on an older id no longer redirects every background request after it. Model families are matched by name, not tier, so a Mythos request is no longer treated as Fable.",
+        ref: 69,
+      },
+      {
+        group: 'Fixed',
+        text: "A refine running from the band, and its result row with Restore original, are no longer ended when a delivery (a schedule, a task notification or a plugin's own message) arrives. Only your own send ends them.",
+        ref: 69,
+      },
+      {
+        group: 'Changed',
+        text: 'The status row measures its 25% and 60% cutoffs against at most 200,000 tokens. On a 1M window the "Manage context" button now appears at 50,000 tokens and Compact is recommended from 120,000, not at 250,000 and 600,000. The row still shows the reported percent.',
+        ref: 69,
+      },
+      {
+        group: 'Docs, CI and tooling',
+        text: "The README states three limits of the move: `/cost` and the decision log still price a moved request at the session model's rate, a session on `haiku` that switches up leaves its haiku requests alone, and where your organization's guard mod loads, background requests stay on the session's model. It also notes that the `haiku` alias is Haiku 4.5 on Bedrock, Google Cloud, Microsoft Foundry and Claude Platform on AWS.",
+        ref: 69,
+      },
+      {
+        group: 'Docs, CI and tooling',
+        text: 'The test file imports `register` without its `.ts` extension, so the documented typecheck exits 0 again instead of failing with TS5097.',
+        ref: 69,
+      },
+      {
+        group: 'Docs, CI and tooling',
+        text: "Added a proposal and a plan for a session-wide model switch, with the result of the spike that tried a real `/model` switch (it failed), and rebuilt the plans gallery so the plan's card reads in-progress.",
+        ref: 68,
+      },
       {
         group: 'Docs, CI and tooling',
         text: 'The refine eval now accepts an `<issues>` block only before the rewrite, the same place the plugin reads it, so a reply with `<issues>` inside the rewrite no longer scores clean.',
