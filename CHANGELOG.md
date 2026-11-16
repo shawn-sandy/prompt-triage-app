@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     cutoffs are capped at 200,000 tokens, and a refine survives a delivery. `Unreleased` is gone
     until a commit lands after the last version bump, so `tests/data/plugin-changelog.test.ts`
     now accepts a list with no `Unreleased` entry
+
 - **Posts on 0.7.6**: `/posts/background-requests` (how a switch now moves compaction, `/recap` and
   prompt suggestions, why it runs no `/model`, and its limits) and `/posts/release-0-7-6` (the
   200,000-token cutoffs, the refine fix and the typecheck repair)
