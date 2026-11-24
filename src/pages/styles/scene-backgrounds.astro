@@ -1,0 +1,37 @@
+---
+import Layout from '#layouts/Layout.astro'
+
+const patterns = [0, 1, 2, 3, 4, 5] as const
+const tints = [undefined, 'ink'] as const
+---
+
+<Layout
+  pageTitle="Scene backgrounds"
+  pageDescription="Preview of the data-scene-bg patterns."
+  showBreadcrumb={false}
+>
+  <h1>Scene backgrounds</h1>
+  <p>Six patterns from the promo videos. Text stays ink on paper; the pattern sits behind it.</p>
+  {
+    tints.map(tint => (
+      <>
+        <h2>{tint === 'ink' ? 'Ink tint' : 'Default tint'}</h2>
+        {patterns.map(n => (
+          <section data-scene-bg={n} data-scene-tint={tint} class="scene-demo">
+            <h3>data-scene-bg="{n}"</h3>
+            <p>Body text over the pattern, to check contrast by eye.</p>
+          </section>
+        ))}
+      </>
+    ))
+  }
+</Layout>
+
+<style>
+  .scene-demo {
+    border: 1px solid var(--rule);
+    margin-block-end: 1.5rem;
+    min-height: 14rem;
+    padding: 1.5rem;
+  }
+</style>

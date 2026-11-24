@@ -318,3 +318,37 @@ Automated coverage:
 | `src/styles/DESIGN-TOKENS-README.md`           | The wider token layer this direction extends  |
 | `project-docs/03-features/design-direction.md` | The same contract in the project docs         |
 | `.claude/skills/customize-design/SKILL.md`     | The skill that rebrands these tokens          |
+
+## Scene Backgrounds
+
+The six patterns behind the prompt-triage promo videos are available to the site as an opt-in attribute. Put
+`data-scene-bg="0"` through `"5"` on any container and the pattern paints behind its content: dot grid, diagonal
+stripes, concentric rings, blueprint grid, glow with dots, and ring burst.
+
+```html
+<section data-scene-bg="3">
+  <h2>Heading</h2>
+  <p>Content stays ink on paper.</p>
+</section>
+
+<!-- Neutral tint, for pages that must keep the accent rule -->
+<section data-scene-bg="1" data-scene-tint="ink">...</section>
+```
+
+| Token                  | Light       | Dark          | Use                                    |
+| ---------------------- | ----------- | ------------- | -------------------------------------- |
+| `--scene-tint-rgb`     | `18 122 58` | `63 212 108`  | Default tint, the island green         |
+| `--scene-tint-ink-rgb` | `19 19 19`  | `236 236 236` | Neutral tint (`data-scene-tint="ink"`) |
+
+- **Layout is untouched.** The pattern is a `::before` layer behind the content, so it adds no height and keeps the
+  container's own background.
+- **Contrast.** Measured over the strongest overlap of layers (about 45% tint): `--ink` is 9.2:1 in light and 5.6:1 in
+  dark. `--ink-soft` falls to 3.3:1 and 2.6:1 there, so set text over a pattern in `--ink`.
+- **Motion.** The patterns are static. Anything animated later needs a `prefers-reduced-motion` guard.
+- **Forced colours and print** hide the patterns.
+
+<Aside type="caution" title="The default tint is the accent">
+  The default tint is the island green, to match the videos. It is decoration, so on pages covered
+  by the Hydration Rule use `data-scene-tint="ink"`. A live preview is at
+  `/styles/scene-backgrounds`.
+</Aside>

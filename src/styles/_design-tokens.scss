@@ -39,6 +39,11 @@
   --paper-sunk: #f1f1f1;
   --rule: #e0e0e0;
 
+  // Scene backgrounds (see components/_scene-backgrounds.scss): r g b of the
+  // tint those decorative patterns are drawn in. Same green as the promo videos.
+  --scene-tint-rgb: 18 122 58;
+  --scene-tint-ink-rgb: 19 19 19;
+
   // Lets the UA paint native controls, scrollbars and form widgets to match.
   color-scheme: light;
 }
@@ -51,6 +56,8 @@
   --paper: #131313;
   --paper-sunk: #1c1c1c;
   --rule: #2c2c2c;
+  --scene-tint-rgb: 63 212 108;
+  --scene-tint-ink-rgb: 236 236 236;
 
   color-scheme: dark;
 }
