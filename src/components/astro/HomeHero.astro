@@ -235,8 +235,10 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     min-width: 0;
   }
 
+  /* Ink, not the soft ink: the scene pattern sits behind this text, and the
+     soft ink falls below 4.5:1 where the glow overlaps (see _scene-backgrounds.scss). */
   .home-hero .home-hero__eyebrow {
-    color: var(--hero-ink-soft);
+    color: var(--hero-ink);
     font-family: var(--font-family-mono, ui-monospace, monospace);
     font-size: 0.75rem;
     letter-spacing: normal;
@@ -270,7 +272,7 @@ const installLink = `${PLUGIN_REPO_URL}#install`
   }
 
   .home-hero .home-hero__deck {
-    color: var(--hero-ink-soft);
+    color: var(--hero-ink);
     font-size: var(--hero-deck-size);
     line-height: 1.5;
     margin: 0;
@@ -362,7 +364,7 @@ const installLink = `${PLUGIN_REPO_URL}#install`
    */
   .home-hero .home-hero__legend {
     border-top: 1px solid var(--hero-rule);
-    color: var(--hero-ink-soft);
+    color: var(--hero-ink);
     font-family: var(--font-family-mono, ui-monospace, monospace);
     font-size: 0.71875rem;
     line-height: 1.6;
