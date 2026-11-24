@@ -49,7 +49,7 @@ export type Props = {
 
 const {
   eyebrow = 'Claude Code plugin / MIT licensed',
-  headline = 'Pick the right model before the first prompt runs.',
+  headline = 'Pick the right model before the first prompt runs',
   deck = 'A Claude Code plugin that rates your first prompt, suggests haiku, sonnet, opus or fable to match, moves the whole session to the one you pick, and raises effort when it is set too low.',
 } = Astro.props as Props
 
@@ -239,10 +239,10 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     color: var(--hero-ink-soft);
     font-family: var(--font-family-mono, ui-monospace, monospace);
     font-size: 0.75rem;
-    letter-spacing: 0.14em;
+    letter-spacing: normal;
     margin: 0 0 1.25rem;
     max-width: none;
-    text-transform: uppercase;
+    text-transform: none;
   }
 
   .home-hero .home-hero__display {
@@ -386,19 +386,18 @@ const installLink = `${PLUGIN_REPO_URL}#install`
   }
 
   .home-hero .home-hero__specimen-label {
-    /* `background-color`, not the shorthand: the shorthand would reset the
-       terminal dots `[data-ui="terminal-bar"]` paints as background images. */
+    /* Clears the terminal dots `[data-ui="terminal-bar"]` paints, which the
+       hero no longer shows: the background image is removed here, and the
+       padding returns to the plain inline start. */
     background-color: var(--hero-paper-sunk);
+    background-image: none;
     border-bottom: 1px solid var(--hero-rule);
     color: var(--hero-ink-soft);
     font-family: var(--font-family-mono, ui-monospace, monospace);
     font-size: 0.65625rem;
-    letter-spacing: 0.12em;
-
-    /* The 3.5rem inline start clears the terminal dots. Restated here because
-       this rule outranks `[data-ui="terminal-bar"]` on specificity. */
-    padding: 0.625rem 1rem 0.625rem 3.5rem;
-    text-transform: uppercase;
+    letter-spacing: normal;
+    padding: 0.625rem 1rem;
+    text-transform: none;
   }
 
   .home-hero .home-hero__specimen-body {
@@ -445,12 +444,13 @@ const installLink = `${PLUGIN_REPO_URL}#install`
     font-size: inherit;
   }
 
-  /* Interactive, so it may carry the accent. Styled as the ghost button. */
+  /* Neutral ink, not the accent: the accent stays on the primary action and
+     the ghost link, so the copy control reads as a utility, not a call to action. */
   .home-hero .home-hero__copy {
     background: transparent;
     border: 1px solid var(--hero-rule);
     border-radius: var(--radius, 0.5rem);
-    color: var(--hero-island);
+    color: var(--hero-ink);
     cursor: pointer;
     flex-shrink: 0;
     font-size: 0.75rem;
