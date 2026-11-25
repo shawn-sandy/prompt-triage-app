@@ -46,3 +46,7 @@ storybook-static/
 # Generated agent config mirrors (not project source).
 .agents/
 .codex/
+
+# OnCue video tooling: local engine copy (node_modules) and rendered Short output.
+/oncue-engine/
+/video/short-1-refine/
