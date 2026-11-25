@@ -88,4 +88,4 @@ Seven beats, about 199 words of voiceover, vertical 1080x1920. Look taken from t
 - `video/short-1-refine/logo.png`: new; copy of `public/images/prompt-triage-logo.png` (380x380 PNG).
 - `docs/plans/sessions/plan-triage-shorts-session.md`: new; this recap.
 
-Nothing is committed.
+The `video/` and `oncue-engine/` folders are gitignored and ignored by ESLint; only this recap and those ignore rules are committed.
