@@ -270,6 +270,8 @@ export default [
       '.netlify/**',
       'playwright-report/**',
       'test-results/**',
+      'oncue-engine/**', // Local OnCue engine copy, gitignored
+      'video/short-1-refine/**', // Rendered Short output, gitignored
       '*.d.ts',
       '**/*.astro', // Temporarily ignore all Astro files until parser issues are resolved
     ],
